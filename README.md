@@ -1,3 +1,16 @@
+# THIS PROJECT USES DJANGO REST-FRAMEWORK AND REACT
+
+## BACKEND DOCS
+
+
+
+
+
+
+
+
+## FRONT-END DOCS
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
