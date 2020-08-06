@@ -6,6 +6,8 @@ from rest_framework import status
 from django.http import Http404
 from rest_framework import generics
 from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 class AllProductsListView(APIView):
     """
@@ -101,5 +103,16 @@ class ProductsSearchView(generics.ListAPIView):
     filter_backends = [filters.SearchFilter]
     search_fields = ['product_details','reviews','order_items','serial_no','name','category','description','price','supplier','tags']
     
+class ProductsOrderingView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['product_details','reviews','serial_no','name','category','description','price','supplier']
+    ordering = ['name']
     
+class ProductsFilterView(generics.ListAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['product_details','reviews','serial_no','name','category','description','price','supplier']
     
