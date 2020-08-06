@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ..models import Category,Supplier,Tag,Product,ProductDetail,DetailName
+from ..models import Category,Supplier,Tag,Product,ProductDetail,DetailName,Review
 
 class ProductSerializer(serializers.ModelSerializer):
     # product_details = serializers.HyperlinkedIdentityField(view_name="shop:product-details")
@@ -28,7 +28,8 @@ class DetailNameSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
         
-class ProductDetailSerializer(serializers.HyperlinkedModelSerializer):
+class ReviewSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = ProductDetail
         fields = '__all__'
+        
