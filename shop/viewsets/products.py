@@ -11,8 +11,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 class AllProductsListView(APIView):
     """
-    List all products, or create a new product.
+
+        List all products, or create a new product.
+    
     """
+    
     def get(self, request, format=None):
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
@@ -26,9 +29,13 @@ class AllProductsListView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
       
 class ProductDetailView(APIView):
+
     """
-    Retrieve, update or delete a snippet instance.
+
+        Retrieve, update or delete a snippet instance.
+
     """
+
     def get_object(self, pk):
         try:
             return Product.objects.get(pk=pk)

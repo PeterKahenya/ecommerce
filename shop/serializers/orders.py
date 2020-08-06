@@ -18,14 +18,15 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id','added_by','checkout_by','order_items','total_price','shipping_addresses','created_at','updated_at']
-        
+        depth=1  
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     orders = OrderSerializer(many=True, read_only=True)
     class Meta:
         model = OrderItem
         fields = ['id','product','orders','quantity','created_at','updated_at']
-        
+        depth=1  
 
         
 
