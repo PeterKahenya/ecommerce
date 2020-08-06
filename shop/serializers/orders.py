@@ -3,26 +3,26 @@ from ..models import OrderItem,Order,ShippingAddress,Delivery
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
-    # product_details = serializers.HyperlinkedIdentityField(view_name="shop:product-details")
+    orders = OrderSerializer(many=True, read_only=True)
     class Meta:
         model = OrderItem
-        fields = '__all__'
+        fields = ['id','product','orders','quantity','created_at','updated_at']
         
 class OrderSerializer(serializers.ModelSerializer):
-    # product_details = serializers.HyperlinkedIdentityField(view_name="shop:product-details")
+    shipping_addresses = ShippingAddressSerializer(many=True, read_only=True)
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['id','added_by','checkout_by','order_items','total_price','shipping_addresses','created_at','updated_at']
         
         
  class ShippingAddressSerializer(serializers.ModelSerializer):
-    # product_details = serializers.HyperlinkedIdentityField(view_name="shop:product-details")
+    delivery = DeliverySerializer(many=True, read_only=True)
+
     class Meta:
         model = ShippingAddress
-        fields = '__all__'
+        fields = ['id','order','full_name','county','city','longitude','latitude','delivery','created_at','updated_at']
         
 class DeliverySerializer(serializers.ModelSerializer):
-    # product_details = serializers.HyperlinkedIdentityField(view_name="shop:product-details")
     class Meta:
         model = Delivery
         fields = '__all__'
