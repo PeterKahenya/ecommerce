@@ -2,15 +2,35 @@ from rest_framework import serializers
 from .orders import OrderItemSerializer
 from ..models import Category,Supplier,Tag,Product,ProductDetail,DetailName,Review
 
+
+class ProductDetailSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = ProductDetail
+        fields = ['id','detail_name','value','created_at','updated_at']
+        depth=1
+        
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Review
+        fields = ['id','ratting','comment','user','created_at','updated_at']
+        depth=1
+        
+
+
 class ProductSerializer(serializers.ModelSerializer):
-    product_details = ProductDetailSerializer(many=True, read_only=True)
+    details = ProductDetailSerializer(many=True, read_only=True)
     order_items = OrderItemSerializer(many=True, read_only=True)
     reviews = ReviewSerializer(many=True, read_only=True)
     
     class Meta:
         model = Product
-        fields = ['product_details','reviews','order_items','id','serial_no','name','category','image','description','price','supplier','tags','created_at','updated_at']
-        
+        fields = ['details','reviews','order_items','id','serial_no','name','category','image','description','price','supplier','tags','created_at','updated_at']
+        depth=1
+
 class CategorySerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, read_only=True)
     
@@ -40,15 +60,7 @@ class DetailNameSerializer(serializers.ModelSerializer):
     class Meta:
         model = DetailName
         fields = ['id','name','details','created_at','updated_at']
+        depth=3
+     
         
-class ProductDetailSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = ProductDetail
-        fields = '__all__'       
-        
-class ReviewSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Review
-        fields = '__all__'
-        
+

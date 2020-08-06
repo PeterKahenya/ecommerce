@@ -82,7 +82,7 @@ class ProductDetail(models.Model):
     updated_at = models.DateTimeField(auto_now=True,editable=False)
     
     def __str__(self):
-        return self.detailname.name + " : "+ self.value
+        return self.detail_name.name + " : "+ self.value
 
 
 
@@ -138,7 +138,7 @@ class Review(models.Model):
     updated_at = models.DateTimeField(auto_now=True,editable=False)
  
     def __str__(self):
-        return self.product.name + " is " + self.comment + " ratted "+str(ratting)
+        return self.product.name + " is " + self.comment + " ratted "+str(self.ratting)
 
 
 
