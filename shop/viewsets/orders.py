@@ -15,7 +15,8 @@ class ShippingAddressView(APIView):
     """
 
     def get(self, request, format=None):
-        addresses = ShippingAddress.objects.filter(order.checkout_by=request.user)
+        cart,created = Order.objects.get_or_create(added_by=request.user)
+        addresses = ShippingAddress.objects.filter(order=cart)
         serializer = ShippingAddressSerializer(addresses, many=True)
         return Response(serializer.data)
 
