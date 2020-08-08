@@ -9,6 +9,9 @@ from rest_framework import routers, serializers, viewsets
 
 urlpatterns = [
     path('api/shop/', include('shop.api_urls')),
+    path('api/customer/', include('customers.api_urls')),
+    path('api/expert/', include('experts.api_urls')),
+    
     path('admin/', admin.site.urls),
     re_path(r'^api-auth/', include('rest_framework.urls'))
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

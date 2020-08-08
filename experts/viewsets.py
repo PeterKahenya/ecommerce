@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
-from .models import Customer
+from .models import Expert
 from django.contrib.auth.models import User
-from .serializers import CustomerSerializer 
+from .serializers import ExpertSerializer 
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -14,17 +14,17 @@ class GetOrGenerateToken(APIView):
 
         try:
             user = User.objects.filter(username=username,password=password).first()
-            customer = Customer.objects.filter(user=user).first()
+            expert = Expert.objects.filter(user=user).first()
             token,created = Token.objects.get_or_create(user=user)
         
         except Exception as e:
             return Response({'message':str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            cs=CustomerSerializer(customer)
-            return Response({'success':True,"customer":cs.data,"token":token.key})
+            es=ExpertSerializer(expert)
+            return Response({'success':True,"expert":es.data,"token":token.key})
 
 
-class CustomerSignUpView(APIView):
+class ExpertSignUpView(APIView):
     def post(self, request,format=None):
         first_name=request.data.get('first_name')
         last_name=request.data.get('last_name')
@@ -39,13 +39,13 @@ class CustomerSignUpView(APIView):
             user.last_name = last_name
             user.save()
             
-            customer = Customer.objects.create(user=user)
+            expert = Expert.objects.create(user=user)
             token = Token.objects.create(user=user)
         except Exception as e:
             return Response({'message':"Integrity Error,"+str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            cs=CustomerSerializer(customer)
-            return Response({'success':True,"customer":cs.data,"token":token.key},status=status.HTTP_201_CREATED)
+            es=ExpertSerializer(expert)
+            return Response({'success':True,"expert":es.data,"token":token.key},status=status.HTTP_201_CREATED)
 
 
         

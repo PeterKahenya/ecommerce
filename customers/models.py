@@ -8,7 +8,9 @@ class Customer(models.Model):
 	address_longitude=models.FloatField(blank=True,null=True)
 	address_latitude=models.FloatField(blank=True,null=True)
 	phone_number=models.CharField(blank=True,null=True,max_length=11)
-
+	created_at = models.DateTimeField(auto_now_add=True,editable=False,null=True)
+	updated_at = models.DateTimeField(auto_now=True,editable=False,null=True)
+    
 
 	def __str__(self):
 		return self.user.username
