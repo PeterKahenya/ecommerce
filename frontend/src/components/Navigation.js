@@ -40,7 +40,7 @@ class Navigation extends Component {
     render() { 
 
         return ( <div >
-            <AppBar className="appbar" position="static">
+            <AppBar className="appbar" position="fixed">
             <Toolbar className="toolbar">
                 <div className="toolbarTop">
                     <div style={{float:"right"}} onClick={this.toggleLeft.bind(this)} className="material-icons">

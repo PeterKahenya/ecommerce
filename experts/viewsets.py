@@ -47,5 +47,9 @@ class ExpertSignUpView(APIView):
             es=ExpertSerializer(expert)
             return Response({'success':True,"expert":es.data,"token":token.key},status=status.HTTP_201_CREATED)
 
-
+class ExpertsListView(APIView):
+    def get(self,request,format=None):
+        experts=Expert.objects.all()
+        es=ExpertSerializer(experts,many=True)
+        return Response(es.data)
         

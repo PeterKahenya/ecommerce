@@ -145,19 +145,22 @@ async function prepare() {
 
   //Get local stream
   localStream = await navigator.mediaDevices.getUserMedia({ video: {facingMode:cameraOrientation}, audio: true });
+//   remoteVideo.srcObject = localStream
   localVideo.srcObject = localStream
-//   flipCameraButton.onclick = handleOnFlipCamera
+
+  flipCameraButton.onclick = handleOnFlipCamera
 
 
 
   if (utype==="caller") {
 
   //Send the call request using FCM
-
-
+	
+	// Send a POST request
+	
 	}
 
-	// setupChating()
+	setupChating()
 
 
 
@@ -329,7 +332,6 @@ function setupChating() {
     chat_message=my_chat_text_area.value
     if (chat_message==="") {return;}
 
-
     await roomRef.collection("chats").add({
       	from:utype,
       	chatMessage:chat_message,
@@ -338,14 +340,16 @@ function setupChating() {
 
 
       // save_chat(chat_message,user==="caller"?caller_id:expert_id)
-      var other_chat_node = document.createElement("div")
-      other_chat_node.className = "my_chat"
-      var chat = document.createElement("div")
-      chat.innerHTML=parse_chat(chat_message)
-      other_chat_node.appendChild(chat)
-      chat_logs.appendChild(other_chat_node)
-      chat_logs.scrollTop = chat_logs.scrollHeight+30;
-      my_chat_text_area.value = ""
+    //   var other_chat_node = document.createElement("div")
+	//   other_chat_node.className = "my_chat shadow-lg"
+	  
+    //   var chat = document.createElement("div")
+    //   chat.innerHTML=parse_chat(chat_message)
+	//   other_chat_node.appendChild(chat)
+	  
+    //   chat_logs.appendChild(other_chat_node)
+    //   chat_logs.scrollTop = chat_logs.scrollHeight+30;
+    //   my_chat_text_area.value = ""
   }
   
   roomRef.collection("chats").onSnapshot(function(snapshot) {
@@ -354,16 +358,17 @@ function setupChating() {
         var actualMessage=change.doc.data()
         // alert(JSON.stringify(actualMessage))
         var other_chat_node = document.createElement("div")
-        other_chat_node.className = "other_chat"
         var chat = document.createElement("div")
         chat.innerHTML=parse_chat(actualMessage.chatMessage)
         if (actualMessage.from===utype) {
-          // log(actualMessage)
+        	other_chat_node.className = "my_chat shadow-sm"
         }else{
-          other_chat_node.appendChild(chat)
-          chat_logs.appendChild(other_chat_node)
-        }
-        chat_logs.scrollTop = chat_logs.scrollHeight + 30
+			other_chat_node.className = "other_chat shadow-sm"
+		}
+		other_chat_node.appendChild(chat)
+		chat_logs.appendChild(other_chat_node)
+		
+        chat_logs.scrollTop = chat_logs.scrollHeight + 50
       }
     })
   });
@@ -371,7 +376,7 @@ function setupChating() {
 
 
 function parse_chat(my_message) {
-  console.log(my_message)
+//   console.log(my_message)
   var urlRegex = /(https?:\/\/[^\s]+)/g;
   return my_message.replace(urlRegex, '<a target="_blank" href="$1">$1</a>')
 }
