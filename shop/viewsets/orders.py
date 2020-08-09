@@ -1,6 +1,6 @@
 from shop.models import *
 from shop.serializers.orders import *
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication,TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -13,6 +13,8 @@ class ShippingAddressView(APIView):
     Get shipping addresses and Create a shipping address
     
     """
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         cart,created = Order.objects.get_or_create(added_by=request.user)
@@ -35,7 +37,8 @@ class CheckoutView(APIView):
         List all products, or create a new product.
     
     """
-
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self, request, format=None):
         cart,created = Order.objects.get_or_create(added_by=request.user)
         serializer = OrderSerializer(cart)
@@ -65,7 +68,7 @@ class CartView(APIView):
 
     """
     
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
