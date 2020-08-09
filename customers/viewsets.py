@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.db.utils import IntegrityError
 
+
 class GetOrGenerateToken(APIView):
     def post(self, request,format=None):
         username=request.data.get('username')
@@ -40,12 +41,15 @@ class CustomerSignUpView(APIView):
             user.save()
             
             customer = Customer.objects.create(user=user)
+            customer.gcm_token = request.data.get('gcm_token')
+            customer.save()
             token = Token.objects.create(user=user)
         except Exception as e:
             return Response({'message':"Integrity Error,"+str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
             cs=CustomerSerializer(customer)
             return Response({'success':True,"customer":cs.data,"token":token.key},status=status.HTTP_201_CREATED)
+ 
 
 
         

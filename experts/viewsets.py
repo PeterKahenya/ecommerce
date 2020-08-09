@@ -40,12 +40,15 @@ class ExpertSignUpView(APIView):
             user.save()
             
             expert = Expert.objects.create(user=user)
+            expert.gcm_token = request.data.get('gcm_token')
+            expert.save()
             token = Token.objects.create(user=user)
         except Exception as e:
             return Response({'message':"Integrity Error,"+str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
             es=ExpertSerializer(expert)
             return Response({'success':True,"expert":es.data,"token":token.key},status=status.HTTP_201_CREATED)
+
 
 class ExpertsListView(APIView):
     def get(self,request,format=None):

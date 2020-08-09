@@ -10,6 +10,7 @@ class Customer(models.Model):
 	phone_number=models.CharField(blank=True,null=True,max_length=11)
 	created_at = models.DateTimeField(auto_now_add=True,editable=False,null=True)
 	updated_at = models.DateTimeField(auto_now=True,editable=False,null=True)
+	gcm_token=models.TextField(blank=True,null=True)
     
 
 	def __str__(self):

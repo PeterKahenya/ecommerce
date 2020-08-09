@@ -18,7 +18,7 @@ class Call(models.Model):
 class Chat(models.Model):
 	id=models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 	sender=models.ForeignKey(User,on_delete=models.CASCADE,related_name='sender')
-	call=models.ForeignKey(Call,on_delete=models.CASCADE,related_name="chat")
+	receiver=models.ForeignKey(User,on_delete=models.CASCADE,related_name='receiver')
 	text=models.TextField(blank=True,null=True)
 	created = models.DateTimeField(auto_now_add=True, editable=False,blank=True,null=True)
 	updated = models.DateTimeField(auto_now=True, editable=False,blank=True,null=True)
