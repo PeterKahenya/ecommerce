@@ -1,0 +1,10 @@
+.signUpContainer{
+    /* width: 80vw !important; */
+    padding: 30px;
+}
+
+.signUpForm{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}

@@ -134,9 +134,9 @@ class Call extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      callingPageOpen: true,
+      callingPageOpen: false,
       tab: 0,
-      callDialogOpen: true,
+      callDialogOpen: false,
       utype:"caller",
       roomId:""
     }

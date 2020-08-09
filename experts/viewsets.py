@@ -26,12 +26,13 @@ class GetOrGenerateToken(APIView):
 
 class ExpertSignUpView(APIView):
     def post(self, request,format=None):
-        first_name=request.data.get('first_name')
-        last_name=request.data.get('last_name')
-        username=request.data.get('email')
+        first_name= request.data.get('first_name')
+        last_name= request.data.get('last_name')
+        username= request.data.get('email')
         email = request.data.get('email')
-        password=request.data.get('password')
-        
+        password= request.data.get('password')
+        specialty= request.data.get('specialty')
+        fcm_token = request.data.get('gcm_token')
         try:
             
             user = User.objects.create_user(username,email,password)
@@ -40,14 +41,15 @@ class ExpertSignUpView(APIView):
             user.save()
             
             expert = Expert.objects.create(user=user)
-            expert.gcm_token = request.data.get('gcm_token')
+            expert.specialty = specialty
+            expert.gcm_token = fcm_token
             expert.save()
             token = Token.objects.create(user=user)
         except Exception as e:
             return Response({'message':"Integrity Error,"+str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
             es=ExpertSerializer(expert)
-            return Response({'success':True,"expert":es.data,"token":token.key},status=status.HTTP_201_CREATED)
+            return Response({'success':True,"user":es.data,"token":token.key},status=status.HTTP_201_CREATED)
 
 
 class ExpertsListView(APIView):

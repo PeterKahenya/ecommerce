@@ -48,7 +48,7 @@ class CustomerSignUpView(APIView):
             return Response({'message':"Integrity Error,"+str(e)}, status=status.HTTP_400_BAD_REQUEST)
         else:
             cs=CustomerSerializer(customer)
-            return Response({'success':True,"customer":cs.data,"token":token.key},status=status.HTTP_201_CREATED)
+            return Response({'success':True,"user":cs.data,"token":token.key},status=status.HTTP_201_CREATED)
  
 
 

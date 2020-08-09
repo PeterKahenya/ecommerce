@@ -31,7 +31,7 @@ class ProductsList extends Component {
     render() { 
 
         let products_list=this.state.products.map(product=>{
-            return <Product product={product} />
+            return <Product key={product.id} product={product} />
         })
 
         return ( <div style={{marginTop:150}}>

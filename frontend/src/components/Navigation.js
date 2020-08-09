@@ -15,7 +15,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
-
+import brand from"./brand.png"
 
 
 class Navigation extends Component {
@@ -24,11 +24,14 @@ class Navigation extends Component {
         super(props);
         this.state = { 
             leftDrawerOpen:false,
-            rightDrawerOpen:false
+            rightDrawerOpen:false,
         }
     }
 
-
+    showProfile(){
+        this.props.authenticate()
+        // alert("Showing Profile")
+    }
     toggleLeft(){
         this.setState({leftDrawerOpen:!this.state.leftDrawerOpen,rightDrawerOpen:false})
     }
@@ -47,10 +50,10 @@ class Navigation extends Component {
                         menu
                     </div>
                     <div>
-                        Tengenetsar
+                        <img src={brand} width={300}/>
                     </div>
                     <div>
-                    <span className="material-icons">
+                    <span className="material-icons" onClick={this.showProfile.bind(this)}>
                         how_to_reg
                     </span>
                     <span onClick={this.toggleRight.bind(this)} className="material-icons">

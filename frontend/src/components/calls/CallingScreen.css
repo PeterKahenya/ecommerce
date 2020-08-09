@@ -3,7 +3,7 @@ html,body,.mainCallContainer{
 	background-color: #ffffff;
 	width: 100%;
 	height: 100%;
-	overflow-y: hidden;
+	overflow-y: auto;
 }
 
 .callContainer{
@@ -12,7 +12,7 @@ html,body,.mainCallContainer{
 	width: 100vw;
 	height: 100vh;
 	/* background-color: brown; */
-	overflow-y: hidden;
+	overflow-y: scroll;
 
 }
 
@@ -304,7 +304,7 @@ html,body,.mainCallContainer{
 		border-radius: 20px;
 		margin: 5vh 12.5vw;
 		background-color: #00b050;
-		overflow-y: hidden;
+		overflow-y: scroll;
 		display: none;
 	
 	}

@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
 import { Card, CardActionArea,CardContent, CardMedia, CardActions, Button } from '@material-ui/core';
-
+import ProductDetails from './ProductDetails';
+import { addToCart } from "../helpers";
 
 
 class Product extends Component {
     constructor(props) {
         super(props);
-        this.state = { product:this.props.product }
+        this.state = { product:this.props.product,showDetails:false }
+    }
+
+
+    showProductDetails(){
+        this.setState({showDetails:true})
+    }
+
+    addToCart(){
+
     }
     render() { 
 
         return ( <div>
             <Card style={{minWidth: 380,margin:10,padding:5,boxShadow:'none'}}>
-                <CardActionArea>
+                <CardActionArea onClick={this.showProductDetails.bind(this)}>
                     <CardMedia
                     style={{height:140}}
                     image={"http://127.0.0.1:8000"+this.state.product.image}
@@ -24,12 +34,13 @@ class Product extends Component {
                 </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    <Button style={{backgroundColor:'#fcca0a'}}>
+                    <Button onClick={this.addToCart.bind(this)} style={{backgroundColor:'#fcca0a'}}>
                         Add To Cart
                         <span className="material-icons">shopping_cart</span>
                     </Button>
                 </CardActions>
             </Card>
+            <ProductDetails product={this.state.product} open={this.state.showDetails}/>
             
             </div> );
     }
