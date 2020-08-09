@@ -13,15 +13,14 @@ urlpatterns = [
     path('products/sort',ProductsOrderingView.as_view(),name="products-sort"),
     path('products/filter',ProductsFilterView.as_view(),name="products-filter"),
     path('categories',AllCategoriesListView.as_view(),name="categories-list"),
-    path('categories/<uuid:pk>/details',CategoryDetailView.as_view(),name="category-details),
+    path('categories/<uuid:pk>/details',CategoryDetailView.as_view(),name="category-details"),
 
-    path('login',TengenetsarLoginView.as_view()),
+    path('login',TengenetsarLoginView.as_view(),name="login"),
 
-    path('cart',CartView.as_view()),
-    path('checkout',CheckoutView.as_view()),
-    path('payment/payment-method-one/add',AddMPESAPaymentView.as_view()),
-    path('payment/payment-method-one/check',CheckMPESAPaymentView.as_view()),
-    
+    path('cart',CartView.as_view(),name="cart"),
+    path('checkout',CheckoutView.as_view(),name="checkout"),
+    path('payment/payment-method-one/add',AddMPESAPaymentView.as_view(),name="add-mpesa-payment"),
+    path('payment/payment-method-one/check',CheckMPESAPaymentView.as_view(),name="check-mpesa-payment"),
     path('addresses',ShippingAddressView.as_view()),
 
 
