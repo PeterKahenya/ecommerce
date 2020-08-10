@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import ShippingAddressForm from './ShippingAddressForm';
 
-class Checkout extends Component {
+class MPESAPayment extends Component {
     constructor(props) {
         super(props);
         this.state = {  }
@@ -9,9 +8,8 @@ class Checkout extends Component {
     render() { 
         return ( <div>
             
-            <ShippingAddressForm/>
         </div> );
     }
 }
  
-export default Checkout;
+export default MPESAPayment;

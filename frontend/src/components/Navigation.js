@@ -16,6 +16,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import brand from"./brand.png"
+import { getCookie } from '../helpers';
+import Cart from './Cart';
 
 
 class Navigation extends Component {
@@ -25,6 +27,7 @@ class Navigation extends Component {
         this.state = { 
             leftDrawerOpen:false,
             rightDrawerOpen:false,
+            cart:{}
         }
     }
 
@@ -40,23 +43,32 @@ class Navigation extends Component {
         this.setState({rightDrawerOpen:!this.state.rightDrawerOpen,leftDrawerOpen:false})
     }
 
+    componentDidMount(){
+        if (getCookie("cart")) {
+            console.log()
+            this.setState({cart:JSON.parse(getCookie("cart"))})
+        } else {
+            this.setState({cart:{order_items:[]}})
+        }
+    }
+
     render() { 
 
         return ( <div >
             <AppBar className="appbar" position="fixed">
             <Toolbar className="toolbar">
                 <div className="toolbarTop">
-                    <div style={{float:"right"}} onClick={this.toggleLeft.bind(this)} className="material-icons">
+                    <div style={{fontSize:50,color:'#00b050'}} onClick={this.toggleLeft.bind(this)} className="material-icons">
                         menu
                     </div>
                     <div>
                         <img src={brand} width={300}/>
                     </div>
                     <div>
-                    <span className="material-icons" onClick={this.showProfile.bind(this)}>
+                    <span style={{fontSize:50,color:'#00b050'}} className="material-icons" onClick={this.showProfile.bind(this)}>
                         how_to_reg
                     </span>
-                    <span onClick={this.toggleRight.bind(this)} className="material-icons">
+                    <span style={{fontSize:50,color:'#00b050'}} onClick={this.toggleRight.bind(this)} className="material-icons">
                         shopping_cart
                     </span>
                     </div>
@@ -76,7 +88,9 @@ class Navigation extends Component {
                 <div className="leftDrawerContent">Left Menu</div>
             </Drawer>
             <Drawer className="rightDrawer" onClose={this.toggleRight.bind(this)} anchor="right" open={this.state.rightDrawerOpen}>
-                <div className="rightDrawerContent">This is Your Cart</div>
+                <div className="rightDrawerContent">
+                    <Cart cart={this.state.cart}/>
+                </div>
                 
             </Drawer>
             </div>

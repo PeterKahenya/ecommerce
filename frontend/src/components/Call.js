@@ -9,6 +9,7 @@ import PhoneIcon from '@material-ui/icons/Phone';
 import ContactsRounded from "@material-ui/icons/ContactsRounded";
 import CallingScreen from './calls/CallingScreen';
 import * as firebase from 'firebase'
+import { getCookie } from '../helpers';
 const axios = require('axios').default
 
 const firebaseConfig = {
@@ -39,9 +40,9 @@ class CallsList extends Component {
   async componentDidMount(){
     var history = await axios({
       method: 'get',
-      url: '127.0.0.1:8000/api/calls/history',
+      url: 'http://127.0.0.1:8000/api/calls/history',
       headers:{
-        'Authorization': 'Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b'
+        'Authorization': 'Token '+getCookie("auth_token")
       }
     });
     this.setState({history:history.data})
@@ -88,10 +89,7 @@ class ExpertsList extends Component {
   async componentDidMount(){
     var response = await axios({
       method: 'get',
-      url: '127.0.0.1:8000/api/experts/',
-      headers:{
-        'Authorization': 'Token 9944b09199c62bcf9418ad846dd0e4bbdfc6ee4b'
-      }
+      url: 'http://127.0.0.1:8000/api/experts/',
     });
     this.setState({experts:response.data})
     
@@ -136,7 +134,7 @@ class Call extends Component {
     this.state = {
       callingPageOpen: false,
       tab: 0,
-      callDialogOpen: false,
+      callDialogOpen: true,
       utype:"caller",
       roomId:""
     }
@@ -150,12 +148,13 @@ class Call extends Component {
 
     var response = await axios({
       method:'GET',
-      url:'127.0.0.1:8000/api/calls/start_call',
+      url:'http://127.0.0.1:8000/api/calls/start_call',
       headers:{
-        'Authorization':'Token sdskajdksajdaskjdhaskjhdkasjhdkash'
+        'Authorization':'Token '+getCookie("auth_token")
       },
       data:{
-        receiver:params.receiver
+        receiver:params.receiver,
+        room:roomRef.id
       }
     })
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardActionArea,CardContent, CardMedia, CardActions, Button } from '@material-ui/core';
 import ProductDetails from './ProductDetails';
-import { addToCart } from "../helpers";
+import { updateCart } from "../helpers";
 
 
 class Product extends Component {
@@ -15,8 +15,15 @@ class Product extends Component {
         this.setState({showDetails:true})
     }
 
-    addToCart(){
-
+    async addToCart(){
+        var response=await updateCart({
+            action:'add',
+            product_id:this.props.product.id,
+            quantity:1
+        })
+        if (response) {
+            this.props.refreshCart()
+        }
     }
     render() { 
 

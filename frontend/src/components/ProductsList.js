@@ -27,11 +27,14 @@ class ProductsList extends Component {
             // always executed
         });
     }
+    refreshCart(){
+        this.props.refreshCart()
+    }
 
     render() { 
 
         let products_list=this.state.products.map(product=>{
-            return <Product key={product.id} product={product} />
+            return <Product refreshCart={this.refreshCart.bind(this)} key={product.id} product={product} />
         })
 
         return ( <div style={{marginTop:150}}>

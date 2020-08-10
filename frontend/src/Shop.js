@@ -39,7 +39,7 @@ class Shop extends Component{
 			return (<div><Navigation/><ProductsList/><Call room_id={room_id}/></div>)	
 		}
 
-		return (<div><Navigation authenticate={this.authenticate}/><ProductsList/><Call /><AuthenticateDialog authSuccess={this.authenticate} show={this.state.showAuthDialog}/></div>)
+		return (<div><Navigation  updateFlag={this.state.updateFlag} authenticate={this.authenticate}/><ProductsList refreshCart={this.update.bind(this)}/><Call /><AuthenticateDialog authSuccess={this.authenticate} show={this.state.showAuthDialog}/></div>)
 	}
 }
 

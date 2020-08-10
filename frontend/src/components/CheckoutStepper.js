@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
+  return ['Enter Shipping Address', 'Lipa Na Mpesa', 'Confirm Order'];
 }
 
 function getStepContent(step) {
@@ -36,7 +36,7 @@ function getStepContent(step) {
   }
 }
 
-export default function Checkout() {
+export default function CheckoutStepper() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());

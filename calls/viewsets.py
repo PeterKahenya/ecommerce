@@ -4,6 +4,7 @@ from .models import Call,Chat
 from django.db.models import Q
 from .serializers import CallSerializer,ChatSerializer
 from customers.models import Customer
+from rest_framework.response import Response
 
 import requests
 
@@ -27,7 +28,7 @@ def sendPush(to,roomId):
 # Create your views here.
 class APICallHistory(APIView):
 	def get(self,request,format=None):
-		if self.request.is_authenticated:
+		if self.request.auth:
 			calls=Call.objects.filter(Q(caller=request.user)|Q(callee=request.user))
 			serializer=CallSerializer(calls,many=True)
 			return Response(serializer.data)
@@ -84,13 +85,13 @@ class APICallView(APIView):
 
 		
 	
-	def get(self,request):
-		room_id = request.GET.get("room")
+	def get(self,request,format=None):
+		room_id = request.data.get("room")
 		if room_id:
 			call= Call()
 			call.room=room_id
 			call.save()
-			utype = request.GET.get("utype")
+			utype = request.data.get("utype")
 			if utype == "caller":
 				return self.start_call(request,call)
 			elif utype == "callee":
@@ -98,8 +99,8 @@ class APICallView(APIView):
 			else:
 				"""utype is not recognized"""
 				print("utype is not recognized")
-				return HttpResponseNotFound("utype is not recognized")
+				return Response({"message":"utype is not recognized"})
 		else:
 			"""Room ID not specified"""
 			print("Room ID not specified")
-			return HttpResponseNotFound("Room ID not specified")
+			return Response({"message":"Room ID not specified"})
