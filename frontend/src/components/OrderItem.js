@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { ListItem } from "@material-ui/core";
 
 class OrderItem extends Component {
     constructor(props) {
@@ -7,7 +8,7 @@ class OrderItem extends Component {
     }
     render() { 
         return ( <ListItem>
-            
+            Order Item
         </ListItem> );
     }
 }

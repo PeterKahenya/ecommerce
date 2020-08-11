@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { TextField } from '@material-ui/core';
 
 class MPESAPayment extends Component {
     constructor(props) {
@@ -7,7 +8,7 @@ class MPESAPayment extends Component {
     }
     render() { 
         return ( <div>
-            
+            <TextField placeholder="MPESA Code"/>
         </div> );
     }
 }

@@ -55,7 +55,7 @@ class Navigation extends Component {
     render() { 
 
         return ( <div >
-            <AppBar className="appbar" position="fixed">
+            <AppBar className="appbar" elevation={1} position="fixed">
             <Toolbar className="toolbar">
                 <div className="toolbarTop">
                     <div style={{fontSize:50,color:'#00b050'}} onClick={this.toggleLeft.bind(this)} className="material-icons">
