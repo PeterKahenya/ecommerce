@@ -64,7 +64,7 @@ class Shop extends Component{
 		}
 
 		return (<div>
-					<Navigation cart={this.state.cart} updateProducts={this.updateProducts.bind(this)}  authenticate={this.authenticate} />
+					<Navigation  cart={this.state.cart} updateProducts={this.updateProducts.bind(this)} updateCart={this.updateCart.bind(this)}  authenticate={this.authenticate} />
 					<div className="categoriesAndList d-flex flex-row">
 						<CategoriesListView updateProducts={this.updateProducts.bind(this)}  className="categoriesList"/>
 						<ProductsList products={this.state.products} />
