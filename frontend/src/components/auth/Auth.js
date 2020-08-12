@@ -19,22 +19,32 @@ const axios = require("axios")
 class AuthenticateDialog extends Component {
     constructor(props) {
         super(props);
-        this.state = { formtype: 'signup' }
+        this.state = { formtype: 'login' }
     }
 
     authSuccess(){
         this.props.authSuccess()
     }
+
+    toggleAuthDialog(){
+        this.props.toggleAuthDialog()
+    }
+
+    switchForms(){
+        this.setState({formtype:this.state.formtype==='login'?'signup':'login'})
+    }
+
+
     render() {
         const { classes, theme } = this.props
-        console.log(this.props)
-
         return (
-            <Dialog className="authContainer" open={this.props.show}>
+            <Dialog onClose={this.toggleAuthDialog.bind(this)} className="authContainer" open={this.props.show}>
+                <div className="authContainer">
                 {this.state.formtype === "login" ? 
-                <Login authSuccess={this.authSuccess.bind(this)}/> : 
-                <SignUp authSuccess={this.authSuccess.bind(this)}/>
+                <Login switchForms={this.switchForms.bind(this)} authSuccess={this.authSuccess.bind(this)}/>: 
+                <SignUp switchForms={this.switchForms.bind(this)} authSuccess={this.authSuccess.bind(this)}/>
                 }
+                </div>
             </Dialog>
         );
     }

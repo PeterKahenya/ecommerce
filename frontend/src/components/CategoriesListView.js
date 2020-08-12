@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { List,ListItem } from '@material-ui/core';
+import { List,ListItem,Paper,Divider } from '@material-ui/core';
+import "./CategoriesListView.css"
+
 const axios = require('axios')
 
 class CategoriesListView extends Component {
@@ -13,8 +15,9 @@ class CategoriesListView extends Component {
     async componentDidMount(){
         let response=await axios({
             url:"http://127.0.0.1:8000/api/shop/categories",
-            method:"POST"
+            method:"GET"
         })
+        console.log(response)
         this.setState({categories_list:response.data})
     }
 
@@ -23,11 +26,12 @@ class CategoriesListView extends Component {
     }
 
     render() { 
-        return ( <List>
+        return ( <Paper className="categoriesList bg-success">
+                <h3 className="text-center text-warning">Categories</h3>
             {this.state.categories_list.map(category=>{
-                return <ListItem onClick={()=>this.updateProducts(category.id)}>{category.name}</ListItem>
+                return <div key={category.id}><ListItem button style={{width:200,cursor:'pointer',padding:20}} key={category.id} onClick={()=>this.updateProducts(category.id)}>{category.name}</ListItem><Divider/></div>
             })}
-        </List> );
+        </Paper> );
     }
 }
  

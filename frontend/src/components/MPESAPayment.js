@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TextField, Button } from '@material-ui/core';
-import lipa from"../lipanampesa.png"
+import lipanampesa from"./lipanampesa.png"
 import * as config from '../config'
 import { getCookie } from '../helpers';
 const axios = require('axios')

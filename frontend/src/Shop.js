@@ -6,6 +6,8 @@ import {getCookie,getOrCreateCookieCart,updateCart as uc} from "./helpers"
 import AuthenticateDialog from "./components/auth/Auth"
 import CategoriesListView from "./components/CategoriesListView"
 import "./Shop.css";
+import {Container} from "@material-ui/core"
+
 const axios = require("axios")
 
 class Shop extends Component{
@@ -31,16 +33,21 @@ class Shop extends Component{
 	}
 
 	async updateCart(data){
-		
 		let cart=await uc(data);
 		this.setState({cart:cart})
 	}
 
+	toggleAuthDialog(){
+		this.setState({showAuthDialog:!this.state.showAuthDialog})
+	}
+
 	async updateProducts(url){
+		console.log(url)
 		let response=await axios({url:url, method:"GET" })
 		if (response.status=200) {
+			console.log(Array.isArray(response.data))
 			this.setState({
-				products:response.data
+				products:response.data.results
 			})
 		}
 	}
@@ -63,14 +70,20 @@ class Shop extends Component{
 			return (<div><Navigation  cart={this.state.cart} authenticate={this.authenticate}/><ProductsList/><Call room_id={room_id}/></div>)	
 		}
 
-		return (<div>
+		return (<div className="d-flex flex-column">
 					<Navigation  cart={this.state.cart} updateProducts={this.updateProducts.bind(this)} updateCart={this.updateCart.bind(this)}  authenticate={this.authenticate} />
-					<div className="categoriesAndList d-flex flex-row">
-						<CategoriesListView updateProducts={this.updateProducts.bind(this)}  className="categoriesList"/>
-						<ProductsList products={this.state.products} />
+					<div style={{marginTop:150}}>
+						<Container className="d-flex flex-row align-items-start ">
+							<CategoriesListView updateProducts={this.updateProducts.bind(this)} />
+							<ProductsList updateProducts={this.updateProducts.bind(this)} products={this.state.products} />
+						</Container>
 					</div>
 					<Call authenticate={this.authenticate}/>
-					<AuthenticateDialog authSuccess={this.authenticate} show={this.state.showAuthDialog}/>
+					<AuthenticateDialog 
+						authSuccess={this.authenticate} 
+						toggleAuthDialog={this.toggleAuthDialog.bind(this)} 
+						show={this.state.showAuthDialog}
+					/>
 				</div>)
 	}
 

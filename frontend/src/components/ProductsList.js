@@ -12,20 +12,9 @@ class ProductsList extends Component {
          }
     }
 
-    componentDidMount(){
-        axios.get('http://127.0.0.1:8000/api/shop/products?format=json')
-        .then( (response) =>{
-            // handle success
-            console.log(response.data);
-            this.setState({products_is_fetched:true,products:response.data})
-        })
-        .catch(function (error) {
-            // handle error
-            console.log(error);
-        })
-        .then(function () {
-            // always executed
-        });
+    async componentDidMount(){
+        await this.props.updateProducts("http://127.0.0.1:8000/api/shop/products")
+        this.setState({products_is_fetched:true})    
     }
 
 
@@ -33,17 +22,20 @@ class ProductsList extends Component {
         this.props.updateCart(data)
     }
 
-    render() { 
+    render() {
 
-        let products_list=this.state.products.map(product=>{
+
+        let products_list=this.props.products.map(product=>{
             return <Product addToCart={this.addToCart.bind(this)} key={product.id} product={product} />
         })
 
-        return ( <div style={{marginTop:150}}>
-            <Container>
+        return ( <div>
+            <Container className="d-flex flex-column ">
                 <h3 className="p-4 text-secondary">Products List</h3>
+                <div>
                 <hr/>
-                <div style={{display:'flex',flexWrap:'wrap',marginBottom:100}}>
+                </div>
+                <div style={{display:'flex',alignItems:'center',justifyContent:'center',flexWrap:'wrap',marginBottom:100}}>
                     {this.state.products_is_fetched?products_list:"Fetching..."}
                 </div>
             </Container>

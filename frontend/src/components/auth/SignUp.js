@@ -62,7 +62,12 @@ class SignUp extends Component {
                     <TextField onChange={e => this.setState({ password: e.target.value })} value={this.state.password} type="password" label="Password" placeholder="Password" variant="outlined" />
                     <TextField onChange={e => this.setState({ cpassword: e.target.value })} value={this.state.cpassword} id="outlined-basic" type="password" label="Confirm Password" placeholder="Confirm Password" variant="outlined" />
                     <Button className="bg-success text-white" onClick={this.getToken.bind(this)}>Sign Up</Button>
-                </form>}
+
+                </form>
+
+            }
+                <Button className="bg-warning text-white" onClick={this.props.switchForms.bind(this)}>Login</Button>
+            
 
         </div>);
     }

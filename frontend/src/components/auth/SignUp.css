@@ -1,10 +1,28 @@
 .signUpContainer{
-    /* width: 80vw !important; */
-    padding: 30px;
+   /*min-width: 100vw !important;*/
+	/*min-height: 100vh !important;*/
+    padding: 50px;
 }
 
 .signUpForm{
-    width: 100%;
+    /*min-width: 100vw !important;*/
+	/*min-height: 100vh !important;*/
     display: flex;
     flex-direction: column;
+}
+
+
+@media screen and (max-width: 800px){
+	.signUpContainer{
+	    /*min-width: 500px;*/
+    	/*min-height: 500px;*/
+	    padding: 50px;
+	}
+
+	.signUpForm{
+	    
+	    display: flex;
+	    flex-direction: column;
+	}
+
 }

@@ -12,7 +12,7 @@ class Product extends Component {
 
 
     showProductDetails(){
-        this.setState({showDetails:true})
+        this.setState({showDetails:!this.state.showDetails})
     }
 
     addToCart(){
@@ -25,7 +25,7 @@ class Product extends Component {
     render() { 
 
         return ( <div>
-            <Card style={{minWidth: 380,margin:10,padding:5,boxShadow:'none'}}>
+            <Card style={{minWidth: 300,margin:5,padding:5,boxShadow:'none'}}>
                 <CardActionArea onClick={this.showProductDetails.bind(this)}>
                     <CardMedia
                     style={{height:140}}
@@ -36,6 +36,9 @@ class Product extends Component {
                 <CardContent>
                     {this.state.product.name}
                 </CardContent>
+                <CardContent>
+                    {this.state.product.price}
+                </CardContent>
                 </CardActionArea>
                 <CardActions>
                     <Button onClick={this.addToCart.bind(this)} style={{backgroundColor:'#fcca0a'}}>
@@ -44,7 +47,7 @@ class Product extends Component {
                     </Button>
                 </CardActions>
             </Card>
-            <ProductDetails addToCart={this.addToCart.bind(this)} product={this.state.product} open={this.state.showDetails}/>
+            <ProductDetails showProductDetails={this.showProductDetails.bind(this)} addToCart={this.addToCart.bind(this)} product={this.state.product} open={this.state.showDetails}/>
             
             </div> );
     }

@@ -15,9 +15,10 @@ class Order extends Component {
     }
 
     render() { 
+        console.log(this.props)
         return ( 
             <div>
-                {this.props.cart.order_items(oi=>{
+                {this.props.cart.order_items.map(oi=>{
                     return(<div>
                         <Avatar><img src={oi.product.image}/></Avatar>
                         <h4>{oi.product.name}</h4>

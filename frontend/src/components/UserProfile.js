@@ -6,17 +6,29 @@ const axios = require('axios')
 class UserProfile extends Component {
     constructor(props) {
         super(props);
-        this.state = {  }
+        this.state = { user:{
+            first_name:"Peter",
+            last_name:"Kahenya",
+            email:"peter@kipya-africa.com",
+
+
+        } }
     }
 
     async componentDidMount(){
-        let response = await axios({
-            url:"http://127.0.0.1:8000/api/get_user_details",
-            method:"GET",
-            headers:{
-                Authentication:"Token "+getCookie("auth_token")
-            }
-        })
+        if (getCookie("auth_token")) {
+
+            let response = await axios({
+                url:"http://127.0.0.1:8000/api/get_user_details",
+                method:"GET",
+                headers:{
+                    Authentication:"Token "+getCookie("auth_token")
+                }
+            })
+            
+        } else {
+
+        }
     }
 
 

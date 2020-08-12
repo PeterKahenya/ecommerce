@@ -36,7 +36,7 @@ class Cart extends Component {
                     </Toolbar>
                 </AppBar>
                 <Container>
-                    <CheckoutStepper/>
+                    <Checkout/>
                 </Container>
             </Dialog>
 

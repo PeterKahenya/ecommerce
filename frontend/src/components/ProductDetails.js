@@ -6,15 +6,17 @@ class ProductDetails extends Component {
         super(props);
         this.state = {  }
     }
-
+    closeDialog(){
+        this.props.showProductDetails()
+    }
     addToCart(){
         this.props.addToCart()
     }
     render() { 
-        return ( <Dialog open={this.props.open}>
+        return ( <Dialog onClose={this.closeDialog.bind(this)} open={this.props.open}>
           
             <div className="d-flex">
-                <img src={"http://127.0.0.1:8000/"+this.props.product.image}/>
+                <img src={"http://127.0.0.1:8000"+this.props.product.image}/>
                 <h1>{this.props.product.name}</h1>
             </div>
             <p>

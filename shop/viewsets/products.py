@@ -19,7 +19,7 @@ class AllProductsListView(APIView):
     def get(self, request, format=None):
         products = Product.objects.all()
         serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data)
+        return Response({"results":serializer.data})
       
     def post(self, request, format=None):
         serializer = ProductSerializer(data=request.data)
@@ -90,7 +90,7 @@ class CategoryProducts(APIView):
         category = self.get_object(pk)
         products = Product.objects.filter(category=category)
         serializer = ProductSerializer(products,many=True)
-        return Response(serializer.data)
+        return Response({"results":serializer.data})
 
 
 class CategoryDetailView(APIView):
@@ -105,7 +105,7 @@ class CategoryDetailView(APIView):
 
     def get(self, request, pk, format=None):
         category = self.get_object(pk)
-        serializer = CategorySerializer(product)
+        serializer = CategorySerializer(category)
         return Response(serializer.data)
 
     def put(self, request, pk, format=None):
@@ -125,18 +125,18 @@ class ProductsSearchView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['product_details','reviews','order_items','serial_no','name','category','description','price','supplier','tags']
+    search_fields = ['name','description']
     
 class ProductsOrderingView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [filters.OrderingFilter]
-    ordering_fields = ['product_details','reviews','serial_no','name','category','description','price','supplier']
+    ordering_fields = ['reviews','serial_no','name','category','description','price','supplier']
     ordering = ['name']
     
 class ProductsFilterView(generics.ListAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['product_details','reviews','serial_no','name','category','description','price','supplier']
+    filterset_fields = ['reviews','serial_no','name','category','description','price','supplier']
     

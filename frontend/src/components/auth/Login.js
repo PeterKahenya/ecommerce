@@ -27,13 +27,21 @@ class Login extends Component {
             })
     }
 
+    useGoogle(){
+
+    }
+
     render() {
         return (<div className="loginContainer">
             <label>Login</label>
             <form className="loginForm" noValidate autoComplete="off">
                 <TextField onChange={e => this.setState({ email: e.target.value })} value={this.state.email} id="outlined-basic" label="Email Address" placeholder="Email Address" variant="outlined" />
                 <TextField onChange={e => this.setState({ password: e.target.value })} value={this.state.password} id="outlined-basic" type="password" label="Password" placeholder="Password" variant="outlined" />
+                <Button className="bg-danger text-white" onClick={this.useGoogle.bind(this)}>Use Google Account</Button>
+                
                 <Button className="bg-success text-white" onClick={this.getToken.bind(this)}>Login</Button>
+                <Button className="bg-warning text-white" onClick={this.props.switchForms.bind(this)}>Signup</Button>
+
             </form>
         </div>);
     }

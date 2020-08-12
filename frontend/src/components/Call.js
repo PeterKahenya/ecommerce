@@ -56,18 +56,17 @@ class CallsList extends Component {
           return(
             <div>
                <ListItem button onClick={this.startCall(hist.receiver)}>
-          <ListItemAvatar>
-            <Avatar>
-              <Typography>
-                P
-              </Typography>
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Peter Kahenya" secondary="July 27th" />
-        </ListItem>
-        <Divider />
-              </div>
-       
+                <ListItemAvatar>
+                  <Avatar>
+                    <Typography>
+                      P
+                    </Typography>
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary="Peter Kahenya" secondary="July 27th" />
+              </ListItem>
+              <Divider />
+            </div>
           )
         })}
       </List>

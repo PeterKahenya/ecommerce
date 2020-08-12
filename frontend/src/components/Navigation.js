@@ -20,6 +20,7 @@ import { getCookie } from '../helpers';
 import Cart from './Cart';
 import { Menu } from '@material-ui/core';
 import UserProfile from './UserProfile';
+import CategoriesListView from './CategoriesListView'
 
 
 class Navigation extends Component {
@@ -51,8 +52,12 @@ class Navigation extends Component {
         
     }
 
+    async updateProducts(url){
+        this.props.updateProducts(url)
+    }
+
     search(){
-        this.props.updateProducts("http://127.0.0.1:8000/api/shop/products/search?search"+this.state.searchTerm)
+        this.props.updateProducts("http://127.0.0.1:8000/api/shop/products/search?search="+this.state.searchTerm)
     }
 
     updateCart(params){
@@ -61,51 +66,50 @@ class Navigation extends Component {
 
     render() { 
 
-        return ( <div >
-            <AppBar className="appbar" elevation={1} position="fixed">
-                <Toolbar className="toolbar">
-                    <div className="toolbarTop">
-                        <div  style={{fontSize:50,color:'#00b050'}} onClick={this.toggleLeft.bind(this)} className="material-icons menuButton">
-                            menu
-                        </div>
-                        <div className="brand">
-                            <img className="brandImage" src={brand} />
-                        </div>
-                        <div className="rightButtons d-flex align-items-center justify-content-between">
-                            <span style={{fontSize:50,color:'#00b050'}} className="material-icons" onClick={this.showProfile.bind(this)}>
-                                how_to_reg
-                            </span>
-                            <Menu open={this.state.showUserProfile}>
-                                <UserProfile/>
-                            </Menu>
-                            <span style={{fontSize:50,color:'#00b050'}} onClick={this.toggleRight.bind(this)} className="material-icons">
-                                shopping_cart
-                            </span>
-                        </div>
-                    </div>
-                    <div className="searchbar">
-                        <input value={this.state.searchTerm} onChange={e => this.setState({ searchTerm: e.target.value })} className="m-1 form-control" placeholder="Search Product..."/>
-                        <button className="btn m-1 btn-primary" onClick={this.search.bind(this)} >search</button>
-                    </div>
-                </Toolbar>
-            </AppBar>
+        return (<div>
+                    <AppBar className="appbar" elevation={1} position="fixed">
+                        <Toolbar className="toolbar">
+                            <div className="toolbarTop">
+                                <div  style={{fontSize:50,color:'#00b050'}} onClick={this.toggleLeft.bind(this)} className="material-icons menuButton">
+                                    menu
+                                </div>
+                                <div className="brand">
+                                    <img className="brandImage" src={brand} />
+                                </div>
+                                <div className="rightButtons d-flex align-items-center justify-content-between">
+                                    <span style={{fontSize:50,color:'#00b050'}} className="material-icons" onClick={this.showProfile.bind(this)}>
+                                        how_to_reg
+                                    </span>
+                                    <Menu open={this.state.showUserProfile}>
+                                        <UserProfile/>
+                                    </Menu>
+                                    <span style={{fontSize:50,color:'#00b050'}} onClick={this.toggleRight.bind(this)} className="material-icons">
+                                        shopping_cart
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="searchbar">
+                                <input value={this.state.searchTerm} onChange={e => this.setState({ searchTerm: e.target.value })} className="m-1 form-control" placeholder="Search Product..."/>
+                                <button className="btn m-1 btn-primary" onClick={this.search.bind(this)} >search</button>
+                            </div>
+                        </Toolbar>
+                    </AppBar>
             
-            <div>
-            <Drawer className="leftDrawer" onClose={this.toggleLeft.bind(this)} anchor="left" open={this.state.leftDrawerOpen}>
-                <UserProfile/>
-                <hr/>
-                <CategoriesListView/>
-                <li>Help</li>
-                <li>Terms</li>
-            </Drawer>
-            <Drawer className="rightDrawer" onClose={this.toggleRight.bind(this)} anchor="right" open={this.state.rightDrawerOpen}>
-                <div className="rightDrawerContent">
-                    <Cart updateCart={this.updateCart.bind()} cart={this.props.cart}/>
-                </div>
-                
-            </Drawer>
-            </div>
-            </div> );
+                    <div>
+                        <Drawer className="leftDrawer" onClose={this.toggleLeft.bind(this)} anchor="left" open={this.state.leftDrawerOpen}>
+                            <UserProfile/>
+                            <hr/>
+                            <CategoriesListView updateProducts={this.updateProducts.bind(this)}/>
+                            <li>Help</li>
+                            <li>Terms</li>
+                        </Drawer>
+                        <Drawer className="rightDrawer" onClose={this.toggleRight.bind(this)} anchor="right" open={this.state.rightDrawerOpen}>
+                            <div className="rightDrawerContent">
+                                <Cart updateCart={this.updateCart.bind()} cart={this.props.cart}/>
+                            </div>
+                        </Drawer>
+                    </div>
+                </div>);
     }
 }
 

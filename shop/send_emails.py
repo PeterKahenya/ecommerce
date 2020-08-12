@@ -4,11 +4,10 @@ from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import uuid
-from shop.models import Payment
 
-def send_docs(payment,email_address,receipt_path=None,user,lpo_path=None):
+def send_docs(payment,email_address,receipt_path=None,user=None,lpo_path=None):
     print(str(payment)+email_address+receipt_path)
-    payment_object=Payment.objects.get(id=payment)
+    payment_object=payment
     html_message = render_to_string('shop/receipt_email.html', {"payment":payment_object,"user":user})
     plain_message = strip_tags(html_message)
     
