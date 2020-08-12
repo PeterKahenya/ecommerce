@@ -55,11 +55,8 @@ class Navigation extends Component {
         this.props.updateProducts("http://127.0.0.1:8000/api/shop/products/search?search"+this.state.searchTerm)
     }
 
-    updateCart(oi,quantity){
-        this.props.updateCart({
-            product:oi.product,
-            quantity:quantity
-        })
+    updateCart(params){
+        this.props.updateCart(params)
     }
 
     render() { 

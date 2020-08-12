@@ -150,6 +150,7 @@ class ShippingAddress(models.Model):
     city = models.CharField(max_length=256,blank=True,null=True)
     longitude = models.FloatField(blank=True,null=True,default=0.0)
     latitude = models.FloatField(blank=True,null=True,default=0.0)
+    is_custom = models.BooleanField(blank=True,null=True,default=False)
     created_at = models.DateTimeField(auto_now_add=True,editable=False)
     updated_at = models.DateTimeField(auto_now=True,editable=False)
 

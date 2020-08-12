@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ShippingAddressForm from './ShippingAddressForm';
-import { Stepper,Step, StepLabel, StepContent, Button } from "@material-ui/core";
+import { Stepper,Step, StepLabel, StepContent, Button, Divider } from "@material-ui/core";
 import ConfirmOrder from './ConfirmOrder';
 import Order from './Order';
 import MPESAPayment from './MPESAPayment';
@@ -11,7 +11,7 @@ const axios =require("axios")
 class Checkout extends Component {
     constructor(props) {
         super(props);
-        this.state = { activeStep:0 }
+        this.state = { activeStep:0,payment:null,addr:null,cart:this.props.cart }
     }
 
     nextStep(){
@@ -37,27 +37,40 @@ class Checkout extends Component {
             
         }
     }
+
+    updateCart(params){
+        this.props.updateCart(params)
+    }
+    setAddress(addr){
+        this.setState({addr:addr})
+    }
+    setPayment(payment){
+        this.setState({payment:payment})
+    }
+
+
     render() { 
         return ( <div>
             <Stepper activeStep={this.state.activeStep} orientation="vertical">
                 <Step key={0}>
                     <StepLabel>Cart</StepLabel>
                     <StepContent>
-                        <Order/>
+                        <Order cart={this.props.cart} updateCart={this.updateCart.bind()}/>
                         <Button onClick={this.nextStep.bind(this)}>Next</Button>
                     </StepContent>
                 </Step>
                 <Step key={0}>
                     <StepLabel>Delivery Address</StepLabel>
                     <StepContent>
-                        <ShippingAddressForm/>
+                        <ShippingAddressForm address={this.state.addr} setAddress={this.setAddress.bind(this)}/>
+                        <Divider/>
                         <Button onClick={this.nextStep.bind(this)}>Next</Button>
                     </StepContent>
                 </Step>
                 <Step key={1}>
                     <StepLabel>Payment</StepLabel>
                     <StepContent>
-                        <MPESAPayment/>
+                        <MPESAPayment setPayment={this.setPayment.bind(this)}/>
                         <Button onClick={this.nextStep.bind(this)}>Next</Button>
                     </StepContent>
                 </Step>

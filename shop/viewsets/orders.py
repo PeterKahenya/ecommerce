@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
+from ..generate_docs import generate_and_send
 
 class ShippingAddressView(APIView):
 
@@ -47,13 +48,18 @@ class CheckoutView(APIView):
     def post(self, request, format=None):
         cart,created = Order.objects.get_or_create(added_by=request.user)
         shipping_address = ShippingAddress.objects.get(id=request.data.get("shipping_address"))
+        shipping_address.order=cart
+        shipping_address.save()
+
         payment = MPESAPayment.objects.get(id=request.data.get("mpesa_payment_id"))
         
         delivery=Delivery(address=shipping_address,mpesa_payment=payment)
         delivery.save()
         cart.completed=True
         cart.save()
-        # send receipts and lpos
+
+        status = generate_and_send(shipping_address,payment)
+        print(status)
         serializer = DeliverySerializer(delivery)
         if serializer.is_valid():
             serializer.save()
