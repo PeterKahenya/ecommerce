@@ -64,16 +64,6 @@ class Shop extends Component{
 		}
 
 		return (<div>
-					{this.state.pendingDelivery?
-					(<div class="jumbotron">
-						<h1 class="display-4">Your Order is Being Deilvered</h1>
-						<p class="lead">We are In the process of Delivering on Your Purchase</p>
-						<hr class="my-4"/>
-						<p>Get will be in touch!</p>
-						<a class="btn btn-primary btn-lg" href="/support" role="button">24/7 Support</a>
-					  </div>
-					)
-					:null}
 					<Navigation  cart={this.state.cart} updateProducts={this.updateProducts.bind(this)} updateCart={this.updateCart.bind(this)}  authenticate={this.authenticate} />
 					<div className="categoriesAndList d-flex flex-row">
 						<CategoriesListView updateProducts={this.updateProducts.bind(this)}  className="categoriesList"/>
