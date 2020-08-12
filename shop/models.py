@@ -126,22 +126,15 @@ class Order(models.Model):
             return order_item
 
     def get_or_create_order_item(self, product):
-        oi=None
         for order_item in self.order_items.all():
             if order_item.product==product:
                 return order_item
 
-            order_item=OrderItem()
-            order_item.quantity=1
-            order_item.product=product
-            order_item.save()
-            
-            #update price
-            self.order_items.add(order_item)
-            self.total_price += product.price*order_item.quantity
-
-            self.save()
-            return order_item
+        order_item=OrderItem()
+        order_item.save()
+        self.order_items.add(order_item)
+        self.save()
+        return order_item
 
 
     def __str__(self):

@@ -75,7 +75,24 @@ class AllCategoriesListView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-      
+
+class CategoryProducts(APIView):
+    """
+    List all products belonging to a category.
+    """
+    def get_object(self, pk):
+        try:
+            return Category.objects.get(pk=pk)
+        except Category.DoesNotExist:
+            raise Http404
+
+    def get(self,request,pk,format=None):
+        category = self.get_object(pk)
+        products = Product.objects.filter(category=category)
+        serializer = ProductSerializer(products,many=True)
+        return Response(serializer.data)
+
+
 class CategoryDetailView(APIView):
     """
     Retrieve, update or delete a snippet instance.

@@ -27,23 +27,25 @@ class ProductsList extends Component {
             // always executed
         });
     }
-    refreshCart(){
-        this.props.refreshCart()
+
+
+    addToCart(data){
+        this.props.updateCart(data)
     }
 
     render() { 
 
         let products_list=this.state.products.map(product=>{
-            return <Product refreshCart={this.refreshCart.bind(this)} key={product.id} product={product} />
+            return <Product addToCart={this.addToCart.bind(this)} key={product.id} product={product} />
         })
 
         return ( <div style={{marginTop:150}}>
             <Container>
-            <h3 className="p-4 text-secondary">Products List</h3>
-            <hr/>
-            <div style={{display:'flex',flexWrap:'wrap',marginBottom:100}}>
-                {this.state.products_is_fetched?products_list:"Fetching..."}
-            </div>
+                <h3 className="p-4 text-secondary">Products List</h3>
+                <hr/>
+                <div style={{display:'flex',flexWrap:'wrap',marginBottom:100}}>
+                    {this.state.products_is_fetched?products_list:"Fetching..."}
+                </div>
             </Container>
             </div> );
     }

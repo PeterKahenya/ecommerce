@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button, Dialog, AppBar, Toolbar, Typography, Container } from '@material-ui/core';
 import Checkout from './Checkout';
 import CheckoutStepper from './CheckoutStepper';
+import Order from './Order';
 
 class Cart extends Component {
     constructor(props) {
@@ -12,11 +13,15 @@ class Cart extends Component {
     handleOpenCheckout(){
         this.setState({openCheckout:!this.state.openCheckout})
     }
+
+    updateCart(params){
+        this.props.updateCart(params)
+    }
+
     render() { 
         return ( <div>
-            {this.props.cart.order_items.map(oi=>{
-                return <div>order_item</div>
-            })}
+            
+            <Order updateCart={this.updateCart.bind(this)} cart={this.props.cart} />
 
             <Dialog open={this.state.openCheckout} fullScreen>
                 <AppBar className="bg-warning text-dark" position="static">

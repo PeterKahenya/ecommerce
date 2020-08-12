@@ -78,18 +78,10 @@ class CartView(APIView):
 
     def post(self, request, format=None):
         cart,created = Order.objects.get_or_create(added_by=request.user)
-        action = request.data.get("action")
-
-        if action == "add":
-            product_id = request.data.get("product_id")
-            product = Product.objects.get(pk=product_id)
-            order_item = cart.get_or_create_order_item(product=product)
-
-        if action == "update_item":
-            order_item_id = request.data.get("order_item_id")
-            updated_quantity = request.data.get("updated_quantity")
-            order_item=OrderItem.objects.get(id=order_item_id)
-            order_item=cart.update_quantity(order_item,updated_quantity)
-
+        product_id = request.data.get("product").id
+        product = Product.objects.get(pk=product_id)
+        order_item = cart.get_or_create_order_item(product=product)
+        updated_quantity = request.data.get("updated_quantity")
+        order_item=cart.update_quantity(order_item,updated_quantity)
         serializer = OrderSerializer(cart)
         return Response(serializer.data)

@@ -1,15 +1,24 @@
 const axios = require("axios")
 
-function updateCartCookie(data) {
+
+function getOrCreateCookieCart(){
     let cart = null
 
     if (!getCookie("cart")) { cart = { order_items: [] }} 
     else {cart = JSON.parse(getCookie("cart"))}
+    document.cookie = "cart=" + JSON.stringify(cart) + ";domain;path=/"
+
+    return cart
+}
+
+
+function updateCartCookie(data) {
+    let cart = getOrCreateCookieCart()
 
     let order_item_index=cart.order_items.findIndex(order_item=>{return order_item.product_id===data.product_id})
     if (order_item_index===-1) {
         cart.order_items.push({
-            product_id:data.product_id,
+            product:data.product,
             quantity:data.quantity
         })
     }else{
@@ -19,11 +28,12 @@ function updateCartCookie(data) {
 
     document.cookie = "cart=" + JSON.stringify(cart) + ";domain;path=/"
 
+    return cart
 }
 
 async function updateCart(data) {
     
-    updateCartCookie(data)
+    let cart=updateCartCookie(data)
     if (getCookie("auth_token")) {
         var response = await axios({
             method: "POST",
@@ -38,6 +48,8 @@ async function updateCart(data) {
         console.log(response)
         return response.status === 200 ? true : false;
     }
+    return cart
+    
 }
 
 async function login(credentials) {
@@ -99,4 +111,4 @@ function getCookie(name) {
 
 
 
-module.exports = { getCookie, login, signup,updateCart }
+module.exports = { getCookie, login, signup, getOrCreateCookieCart, updateCart }

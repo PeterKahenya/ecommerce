@@ -1,0 +1,9 @@
+.categoriesList{
+    display: none !important;
+}
+
+@media screen and (min-width:800px){
+    .categoriesList{
+        display: block !important;
+    }
+}

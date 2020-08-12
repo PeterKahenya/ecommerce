@@ -3,7 +3,7 @@ import {BrowserRouter as Router,Switch,Route,Link,useRouteMatch,useParams} from 
 import Shop from './Shop'
 import Checkout from './components/Checkout';
 import ShippingAddressForm from './components/ShippingAddressForm';
-
+import { getOrCreateCookieCart } from "./helpers";
 
 // import './App.css'
 
@@ -16,17 +16,13 @@ class App extends Component {
      }
   }
   componentDidMount(){
-
+    getOrCreateCookieCart()
   }
 
   render() {
-
-    return (
-            <div>
-            <Checkout />
-          </div>
-          );
+    return <Shop />
   }
+  
 }
 
 export default App;

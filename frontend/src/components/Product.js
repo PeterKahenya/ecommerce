@@ -15,16 +15,13 @@ class Product extends Component {
         this.setState({showDetails:true})
     }
 
-    async addToCart(){
-        var response=await updateCart({
-            action:'add',
-            product_id:this.props.product.id,
+    addToCart(){
+        this.props.addToCart({
+            product:this.props.product,
             quantity:1
         })
-        if (response) {
-            this.props.refreshCart()
-        }
     }
+
     render() { 
 
         return ( <div>
@@ -47,7 +44,7 @@ class Product extends Component {
                     </Button>
                 </CardActions>
             </Card>
-            <ProductDetails product={this.state.product} open={this.state.showDetails}/>
+            <ProductDetails addToCart={this.addToCart.bind(this)} product={this.state.product} open={this.state.showDetails}/>
             
             </div> );
     }

@@ -13,6 +13,8 @@ urlpatterns = [
     path('products/sort',ProductsOrderingView.as_view(),name="products-sort"),
     path('products/filter',ProductsFilterView.as_view(),name="products-filter"),
     path('categories',AllCategoriesListView.as_view(),name="categories-list"),
+    path('categories/<uuid:pk>/products',CategoryProducts.as_view(),name="category-products"),
+    
     path('categories/<uuid:pk>/details',CategoryDetailView.as_view(),name="category-details"),
 
     path('login',TengenetsarLoginView.as_view(),name="login"),
