@@ -16,7 +16,6 @@ class Product extends Component {
     }
 
     addToCart(){
-        console.log("addToCart in Product Component")
         this.props.addToCart({
             product:{
                 id:this.props.product.id,
@@ -29,12 +28,6 @@ class Product extends Component {
     }
 
     render() { 
-        console.log("product props",this.props.cart)
-
-        let order_item_index=this.props.cart.order_items.findIndex(order_item=>{return order_item.product.id===this.state.product.id})
-
-        console.log("product index in cart",order_item_index)
-
 
         return ( <div>
             <Card style={{minWidth: 300,margin:5,padding:5,boxShadow:'none'}}>
@@ -53,16 +46,13 @@ class Product extends Component {
                 </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    {order_item_index===-1?<Button onClick={this.addToCart.bind(this)} style={{backgroundColor:'#fcca0a'}}>
+                    <Button onClick={this.addToCart.bind(this)} style={{backgroundColor:'#fcca0a'}}>
                         Add To Cart
                         <span className="material-icons">shopping_cart</span>
-                    </Button>:<Button style={{backgroundColor:'#00b050',color:'white'}}>
-                        In Cart
-                        <span className="material-icons">check_circle</span>
-                    </Button>}
+                    </Button>
                 </CardActions>
             </Card>
-            <ProductDetails cart={this.props.cart} showProductDetails={this.showProductDetails.bind(this)} addToCart={this.addToCart.bind(this)} product={this.state.product} open={this.state.showDetails}/>
+            <ProductDetails showProductDetails={this.showProductDetails.bind(this)} addToCart={this.addToCart.bind(this)} product={this.state.product} open={this.state.showDetails}/>
             
             </div> );
     }

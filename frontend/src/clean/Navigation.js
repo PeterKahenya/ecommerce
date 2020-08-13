@@ -3,7 +3,7 @@ import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 // import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 // import IconButton from '@material-ui/core/IconButton';
 // import MenuIcon from '@material-ui/icons/Menu';
 // import { makeStyles } from '@material-ui/core/styles';
@@ -36,9 +36,9 @@ class Navigation extends Component {
     }
 
     showProfile(){
-        if(this.props.authenticate()){
+        // if(this.props.authenticate()){
 
-        }
+        // }
     }
     toggleLeft(){
         this.setState({leftDrawerOpen:!this.state.leftDrawerOpen,rightDrawerOpen:false})
@@ -65,8 +65,7 @@ class Navigation extends Component {
     }
 
     render() { 
-        console.log(this.props)
-        let cart_items_count=this.props.cart.order_items.length
+
         return (<div>
                     <AppBar className="appbar" elevation={1} position="fixed">
                         <Toolbar className="toolbar">
@@ -78,20 +77,15 @@ class Navigation extends Component {
                                     <img className="brandImage" src={brand} />
                                 </div>
                                 <div className="rightButtons d-flex align-items-center justify-content-between">
-                                    <span style={{fontSize:70,color:'#00b050'}} className="material-icons m-3" onClick={this.showProfile.bind(this)}>
+                                    <span style={{fontSize:50,color:'#00b050'}} className="material-icons" onClick={this.showProfile.bind(this)}>
                                         how_to_reg
                                     </span>
                                     <Menu open={this.state.showUserProfile}>
                                         <UserProfile/>
                                     </Menu>
-                                    <Button className="p-2 bg-success" onClick={this.toggleRight.bind(this)}>
-                                    <span style={{fontSize:70,color:'#fcca0a'}}  className="material-icons">
+                                    <span style={{fontSize:50,color:'#00b050'}} onClick={this.toggleRight.bind(this)} className="material-icons">
                                         shopping_cart
                                     </span>
-                                    <span className="text-white rounded" >{cart_items_count}</span>
-
-                                    </Button>
-
                                 </div>
                             </div>
                             <div className="searchbar">
@@ -111,7 +105,7 @@ class Navigation extends Component {
                         </Drawer>
                         <Drawer className="rightDrawer" onClose={this.toggleRight.bind(this)} anchor="right" open={this.state.rightDrawerOpen}>
                             <div className="rightDrawerContent">
-                                <Cart authenticate={this.props.authenticate} updateCart={this.updateCart.bind(this)} cart={this.props.cart}/>
+                                <Cart updateCart={this.updateCart.bind(this)} cart={this.props.cart}/>
                             </div>
                         </Drawer>
                     </div>

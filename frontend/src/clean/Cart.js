@@ -3,8 +3,6 @@ import { Button, Dialog, AppBar, Toolbar, Typography, Container } from '@materia
 import Checkout from './Checkout';
 import CheckoutStepper from './CheckoutStepper';
 import Order from './Order';
-import {getCookie,getOrCreateCookieCart,updateCart as uc} from "../helpers"
-
 
 class Cart extends Component {
     constructor(props) {
@@ -13,29 +11,16 @@ class Cart extends Component {
     }
 
     handleOpenCheckout(){
-        if (getCookie("auth_token")) {
         this.setState({openCheckout:!this.state.openCheckout})
-        } else {
-            this.props.authenticate()
-        }
     }
 
     updateCart(params){
-        console.log("updateCart in Cart Component")
-
-        this.props.updateCart(params)
+        // this.props.updateCart(params)
     }
 
     render() { 
-        let total=parseFloat(0)
-
-        this.props.cart.order_items.map(oi=>{
-            console.log(total,parseFloat(oi.product.price),oi.quantity)
-            return total=parseFloat(total+parseFloat(oi.product.price)*parseFloat(oi.quantity))
-        })
-
-        return ( <div className="m-3 p-4">
-            <h2>KES. {parseFloat(total)} </h2>
+        return ( <div>
+            
             <Order updateCart={this.updateCart.bind(this)} cart={this.props.cart} />
 
             <Dialog open={this.state.openCheckout} fullScreen>
@@ -51,7 +36,7 @@ class Cart extends Component {
                     </Toolbar>
                 </AppBar>
                 <Container>
-                    <Checkout cart={this.props.cart} />
+                    <Checkout/>
                 </Container>
             </Dialog>
 

@@ -14,8 +14,7 @@ function getOrCreateCookieCart(){
 
 function updateCartCookie(data) {
     let cart = getOrCreateCookieCart()
-
-    let order_item_index=cart.order_items.findIndex(order_item=>{return order_item.product_id===data.product_id})
+    let order_item_index=cart.order_items.findIndex(order_item=>{return order_item.product.id===data.product.id})
     if (order_item_index===-1) {
         cart.order_items.push({
             product:data.product,
@@ -32,8 +31,12 @@ function updateCartCookie(data) {
 }
 
 async function updateCart(data) {
+    console.log("addToCart in helpers.js",data)
+    
     
     let cart=updateCartCookie(data)
+    console.log("Current Cart",cart)
+
     if (getCookie("auth_token")) {
         var response = await axios({
             method: "POST",

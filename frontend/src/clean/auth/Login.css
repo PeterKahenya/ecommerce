@@ -1,0 +1,12 @@
+.loginContainer{
+    /* width: 80vw !important; */
+    padding: 50px;
+}
+
+.loginForm{
+    min-width: 500px;
+    min-height: 500px;
+
+    display: flex;
+    flex-direction: column;
+}

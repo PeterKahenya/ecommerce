@@ -19,8 +19,6 @@ class ProductsList extends Component {
 
 
     addToCart(data){
-        console.log("addToCart in ProductList Component")
-
         this.props.updateCart(data)
     }
 
@@ -28,12 +26,12 @@ class ProductsList extends Component {
 
 
         let products_list=this.props.products.map(product=>{
-            return <Product cart={this.props.cart} addToCart={this.addToCart.bind(this)} key={product.id} product={product} />
+            return <Product addToCart={this.addToCart.bind(this)} key={product.id} product={product} />
         })
 
         return ( <div>
             <Container className="d-flex flex-column ">
-                <h3 className="p-4 text-secondary">Products List</h3>
+                <h3 className="p-4 text-secondary text-center">Products List</h3>
                 <div>
                 <hr/>
                 </div>

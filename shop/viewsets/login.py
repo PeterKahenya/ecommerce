@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from django.contrib.auth.models import User
 from experts.serializers import ExpertSerializer
 from customers.serializers import CustomerSerializer
+from rest_framework.authtoken.models import Token
 
 class TengenetsarLoginView(APIView):
     def post(self, request,format=None):
@@ -30,7 +31,7 @@ class TengenetsarLoginView(APIView):
             return Response({'success':False})
         
         if tengenetsar_user:
-            token = Token.objects.get_or_create(user=user)
+            token,created = Token.objects.get_or_create(user=user)
             tengenetsar_user.gcm_token = request.data.get('gcm_token')
             tengenetsar_user.save()
             return Response({'token':token.key,'success':True,'user':serializer.data})

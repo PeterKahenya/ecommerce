@@ -9,7 +9,6 @@ class Order extends Component {
     }
 
     updateCart(oi,quantity){
-        console.log("updateCart in Order",oi,quantity)
         this.props.updateCart({
             product:oi.product,
             quantity:quantity
@@ -17,19 +16,16 @@ class Order extends Component {
     }
 
     render() { 
-        // console.log("Order")
-
+        console.log("Correct App")
         return ( 
             <div>
-                {this.props.cart.order_items.map(oi=>{
-                    let img_path="http://127.0.0.1:8000"+oi.product.image
-                    return(<div key={oi.product.id}>
-                        <Avatar><img src={img_path} width={50} height={50}/></Avatar>
+                {this.props.cart.order_items.map(oi=><div key={oi.product.id}>
+                        <Avatar><img src={oi.product.image}/></Avatar>
                         <h4>{oi.product.name}</h4>
                         <TextField value={oi.quantity} onChange={(e)=>{this.updateCart(oi,e.target.value)}} type="Number"/>
                         <Button onClick={(e)=>{this.updateCart(oi,0)}}>Remove</Button>
                         </div>)
-                })}
+                )}
             </div>
          );
     }
