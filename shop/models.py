@@ -89,7 +89,7 @@ class ProductDetail(models.Model):
 class OrderItem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     product = models.ForeignKey(Product,on_delete=models.CASCADE,blank=True,null=True,related_name="order_items")
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(null=True)
     created_at = models.DateTimeField(auto_now_add=True,editable=False)
     updated_at = models.DateTimeField(auto_now=True,editable=False)
     
@@ -119,8 +119,9 @@ class Order(models.Model):
             #update price
             self.total_price=0
             for order_item in self.order_items.all():
+                print(order_item)
                 self.total_price += order_item.product.price*order_item.quantity
-            
+            print(order_item)
             order_item.save()
             self.save()
             return order_item
@@ -131,6 +132,7 @@ class Order(models.Model):
                 return order_item
 
         order_item=OrderItem()
+        order_item.product=product
         order_item.save()
         self.order_items.add(order_item)
         self.save()
@@ -145,7 +147,9 @@ class Order(models.Model):
 class ShippingAddress(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     order = models.ForeignKey(Order,on_delete=models.CASCADE,blank=True,null=True,related_name="shipping_addresses")
-    full_name = models.TextField()
+    owner = models.ForeignKey(User,on_delete=models.CASCADE,blank=True,null=True,related_name="shipping_addresses")
+    full_name = models.TextField(blank=True,null=True)
+    phone = models.CharField(max_length=15,blank=True,null=True)
     county = models.CharField(max_length=256,blank=True,null=True)
     city = models.CharField(max_length=256,blank=True,null=True)
     longitude = models.FloatField(blank=True,null=True,default=0.0)

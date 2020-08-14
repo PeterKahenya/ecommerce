@@ -15,7 +15,7 @@ class ProductDetails extends Component {
     render() { 
         let order_item_index=this.props.cart.order_items.findIndex(order_item=>{return order_item.product.id===this.props.product.id})
 
-        return ( <Dialog onClose={this.closeDialog.bind(this)} open={this.props.open}>
+        return ( <Dialog fullScreen onClose={this.closeDialog.bind(this)} open={this.props.open}>
             <div className="row">
                 <div className="d-flex">
                     <img src={"http://127.0.0.1:8000"+this.props.product.image}/>

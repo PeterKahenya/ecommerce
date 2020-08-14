@@ -28,7 +28,7 @@ class Shop extends Component{
 			this.setState({showAuthDialog:true})
 		}else{
 			console.log("already loggedIn")
-			return true
+			this.setState({showAuthDialog:false})
 		}
 	}
 

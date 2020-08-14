@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { signup } from "../../helpers";
+import { signup } from "../helpers";
 import * as firebase from 'firebase'
 import { Button, TextField, Tab, Tabs } from '@material-ui/core';
 import { ContactsRounded, ContactSupport } from "@material-ui/icons";

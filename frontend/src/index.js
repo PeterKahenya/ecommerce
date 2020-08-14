@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import New from './New';
 
 import * as serviceWorker from './serviceWorker';
 // import FullScreenDialog from './Page';

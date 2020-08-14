@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar, Typography, Paper } from '@material-ui/core';
-import { getCookie } from '../helpers';
+import { getCookie } from './helpers';
 
 const axios = require('axios')
 class UserProfile extends Component {

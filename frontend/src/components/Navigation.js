@@ -106,8 +106,8 @@ class Navigation extends Component {
                             <UserProfile/>
                             <hr/>
                             <CategoriesListView updateProducts={this.updateProducts.bind(this)}/>
-                            <li>Help</li>
-                            <li>Terms</li>
+                            <div>Help</div>
+                            <div>Terms</div>
                         </Drawer>
                         <Drawer className="rightDrawer" onClose={this.toggleRight.bind(this)} anchor="right" open={this.state.rightDrawerOpen}>
                             <div className="rightDrawerContent">

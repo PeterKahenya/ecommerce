@@ -3,7 +3,7 @@ import { Button, Dialog, AppBar, Toolbar, Typography, Container } from '@materia
 import Checkout from './Checkout';
 import CheckoutStepper from './CheckoutStepper';
 import Order from './Order';
-import {getCookie,getOrCreateCookieCart,updateCart as uc} from "../helpers"
+import {getCookie,getOrCreateCookieCart,updateCart as uc} from "./helpers"
 
 
 class Cart extends Component {
@@ -41,17 +41,18 @@ class Cart extends Component {
             <Dialog open={this.state.openCheckout} fullScreen>
                 <AppBar className="bg-warning text-dark" position="static">
                     <Toolbar>
-                        <Typography>
-                            Checkout
-                        </Typography>
                         <Button onClick={this.handleOpenCheckout.bind(this)}>
                             BACK
                         </Button>
+                        <Typography>
+                            Checkout
+                        </Typography>
+
 
                     </Toolbar>
                 </AppBar>
                 <Container>
-                    <Checkout cart={this.props.cart} />
+                    <Checkout updateCart={this.updateCart.bind(this)} cart={this.props.cart} />
                 </Container>
             </Dialog>
 

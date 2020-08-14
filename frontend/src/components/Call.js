@@ -9,7 +9,7 @@ import PhoneIcon from '@material-ui/icons/Phone';
 import ContactsRounded from "@material-ui/icons/ContactsRounded";
 import CallingScreen from './calls/CallingScreen';
 import * as firebase from 'firebase'
-import { getCookie } from '../helpers';
+import { getCookie } from './helpers';
 const axios = require('axios').default
 
 const firebaseConfig = {
@@ -133,7 +133,7 @@ class Call extends Component {
     this.state = {
       callingPageOpen: false,
       tab: 0,
-      callDialogOpen: true,
+      callDialogOpen: false,
       utype:"caller",
       roomId:""
     }

@@ -3,6 +3,8 @@ import {BrowserRouter as Router,Switch,Route,Link,useRouteMatch,useParams} from 
 import Shop from './Shop'
 import Checkout from './components/Checkout';
 import ShippingAddressForm from './components/ShippingAddressForm';
+import MPESAPayment from './components/MPESAPayment';
+
 import { getOrCreateCookieCart } from "./helpers";
 
 // import './App.css'

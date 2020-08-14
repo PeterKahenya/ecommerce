@@ -18,17 +18,25 @@ class ShippingAddressView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
-        cart,created = Order.objects.get_or_create(added_by=request.user)
-        addresses = ShippingAddress.objects.filter(order=cart)
+        addresses = ShippingAddress.objects.filter(owner=request.user)
         serializer = ShippingAddressSerializer(addresses, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = ShippingAddressSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        print(request.data)
+        address = ShippingAddress()
+
+        address.owner = request.user
+        address.full_name = request.data.get("full_name")
+        address.phone = request.data.get("phone")
+        address.county = request.data.get("county")
+        address.city = request.data.get("city")
+        address.longitude = request.data.get("longitude")
+        address.latitude = request.data.get("latitude")
+        address.save()
+
+        serializer = ShippingAddressSerializer(address)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class CheckoutView(APIView):
@@ -47,7 +55,10 @@ class CheckoutView(APIView):
 
     def post(self, request, format=None):
         cart,created = Order.objects.get_or_create(added_by=request.user)
-        shipping_address = ShippingAddress.objects.get(id=request.data.get("shipping_address"))
+
+
+        print(request.COOKIES)
+        shipping_address = ShippingAddress.objects.get(id=request.data.get("shipping_address_id"))
         shipping_address.order=cart
         shipping_address.save()
 
@@ -84,10 +95,11 @@ class CartView(APIView):
 
     def post(self, request, format=None):
         cart,created = Order.objects.get_or_create(added_by=request.user)
-        product_id = request.data.get("product").id
-        product = Product.objects.get(pk=product_id)
-        order_item = cart.get_or_create_order_item(product=product)
-        updated_quantity = request.data.get("updated_quantity")
-        order_item=cart.update_quantity(order_item,updated_quantity)
+        print(request.data)
+        # product_id = request.data.get("product").get("id")
+        # product = Product.objects.get(pk=product_id)
+        # order_item = cart.get_or_create_order_item(product=product)
+        # updated_quantity = request.data.get("quantity")
+        # order_item=cart.update_quantity(order_item,updated_quantity)
         serializer = OrderSerializer(cart)
         return Response(serializer.data)
