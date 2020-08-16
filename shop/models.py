@@ -109,6 +109,43 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True,editable=False)
 
 
+    def update_total(self):
+        self.total_price=0
+        for order_item in self.order_items.all():
+            self.total_price += order_item.product.price*order_item.quantity
+
+
+    def update(self, order_item):
+        for oi in self.order_items.all():
+            if oi.product.id == order_item.get("product").get("id"):
+                if int(order_item.get("quantity"))==0:
+                    self.order_items.remove(oi)
+                    self.update_total()
+                    self.save()
+                    return None
+                else:
+                    oi.quantity =  int(order_item.get("quantity"))
+                    oi.save()
+                    self.update_total()
+                    self.save()
+                    return oi
+
+        product = Product.objects.get(id=order_item.get("product").get("id"))
+        new_order_item = OrderItem()
+        new_order_item.product=product
+        new_order_item.quantity=int(order_item.get("quantity"))
+        new_order_item.save()
+        self.order_items.add(new_order_item)
+        self.update_total()
+        self.save()
+        return new_order_item
+
+
+
+
+
+
+
     def update_quantity(self, order_item,updated_quantity):
 
             if updated_quantity==0:

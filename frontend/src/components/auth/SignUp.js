@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { signup } from "../helpers";
 import * as firebase from 'firebase'
 import { Button, TextField, Tab, Tabs } from '@material-ui/core';
 import { ContactsRounded, ContactSupport } from "@material-ui/icons";
 import './SignUp.css'
+const helpers = require("../../helpers")
 
 
 class SignUp extends Component {
@@ -25,7 +25,7 @@ class SignUp extends Component {
         messaging.requestPermission()
             .then(async () => { return await messaging.getToken() })
             .then(async token => {
-                var status=await signup({ 'gcm_token': token, ...this.state })
+                var status=await helpers.signup({ 'gcm_token': token, ...this.state })
                 if (status) {
                     this.props.authSuccess()
                 } else {

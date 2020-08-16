@@ -23,12 +23,10 @@ class CallingScreen extends Component {
         return (<div className="mainCallContainer">
             <input type="hidden" value={this.props.utype} id="utype" />
             <input type="hidden" value={this.props.room} id="room" />
-            {/* <div className="awaitingCallContainer">
-                HELLO THERE
-            </div> */}
+            
             <div className="callContainer">
                 <div className="videoPanel">
-                    <div class="videoControls">
+                    <div className="videoControls">
 
                         <div className="topControls">
                             <button target="_blank" style={{ float: 'left' }} className="material-icons btn btn-outline-light control-buttons">
@@ -40,13 +38,13 @@ class CallingScreen extends Component {
                         </div>
 
                         <div className="bottomControls">
-                            <button id="mic_off_btn" class="material-icons btn btn-outline-light control-buttons">
+                            <button id="mic_off_btn" className="material-icons btn btn-outline-light control-buttons">
                                 mic
 					        </button>
-                            <button id="videocam_off_btn" class="material-icons btn btn-outline-light control-buttons">
+                            <button id="videocam_off_btn" className="material-icons btn btn-outline-light control-buttons">
                                 videocam
 					        </button>
-                            <button id="hangup_btn" class="material-icons bg-danger btn btn-outline-danger text-white control-buttons">
+                            <button id="hangup_btn" className="material-icons bg-danger btn btn-outline-danger text-white control-buttons">
                                 call
 					        </button>
                             <video style={{ display: 'block' }} autoPlay playsInline id="localVideo"></video>
@@ -54,7 +52,7 @@ class CallingScreen extends Component {
 
                     </div>
 
-                    <div class="mainVideo">
+                    <div className="mainVideo">
                         <video style={{ display: 'block' }} autoPlay playsInline id="remoteVideo"></video>
                     </div>
                 </div>
@@ -66,11 +64,11 @@ class CallingScreen extends Component {
 
                     </div>
                     <div className="chatBox">
-                        {/* <button class="material-icons bg-warning" data-toggle="modal" data-target="#exampleModal" id="send_chat_btn">
+                        {/* <button className="material-icons bg-warning" data-toggle="modal" data-target="#exampleModal" id="send_chat_btn">
                                 add
 				            </button> */}
-                        <input id="chat_text_area" class="form-controls shadow-sm" placeholder="Enter message..." />
-                        <button class="material-icons" id="send_chat_btn">
+                        <input id="chat_text_area" className="form-controls shadow-sm" placeholder="Enter message..." />
+                        <button className="material-icons" id="send_chat_btn">
                             send
 				            </button>
                     </div>

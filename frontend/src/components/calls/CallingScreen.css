@@ -12,7 +12,7 @@ html,body,.mainCallContainer{
 	width: 100vw;
 	height: 100vh;
 	/* background-color: brown; */
-	overflow-y: scroll;
+	/*overflow-y: scroll;*/
 
 }
 
@@ -24,7 +24,7 @@ html,body,.mainCallContainer{
 	width: 100vw;
 	height: 100vh;
 	background-color: #00b050;
-	overflow-y: hidden;
+	/*overflow-y: hidden;*/
 
 }
 
@@ -304,8 +304,8 @@ html,body,.mainCallContainer{
 		border-radius: 20px;
 		margin: 5vh 12.5vw;
 		background-color: #00b050;
-		overflow-y: scroll;
-		display: none;
+		/*overflow-y: scroll;*/
+		/*display: none;*/
 	
 	}
 

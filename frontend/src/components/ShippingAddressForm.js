@@ -11,7 +11,9 @@ import AddIcon from '@material-ui/icons/Add';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import MyLocationIcon from '@material-ui/icons/MyLocation';
 
-import { getCookie } from './helpers';
+// import { getCookie } from './helpers';
+const helpers = require("../helpers")
+
 const axios = require('axios');
 
 class ShippingAddressForm extends Component {
@@ -47,7 +49,7 @@ class ShippingAddressForm extends Component {
             url: "http://127.0.0.1:8000/api/shop/addresses",
             method: "GET",
             headers: {
-                Authorization: 'Token ' + getCookie("auth_token")
+                Authorization: 'Token ' + helpers.getCookie("auth_token")
             }
         })
         // console.log(response)
@@ -97,7 +99,7 @@ class ShippingAddressForm extends Component {
                     url: "http://127.0.0.1:8000/api/shop/addresses",
                     method: "POST",
                     headers: {
-                        Authorization: 'Token ' + getCookie("auth_token")
+                        Authorization: 'Token ' + helpers.getCookie("auth_token")
                     },
                     data:{
                         city:place.name,
@@ -124,7 +126,7 @@ class ShippingAddressForm extends Component {
             url: "http://127.0.0.1:8000/api/shop/addresses",
             method: "POST",
             headers: {
-                Authorization: 'Token ' + getCookie("auth_token")
+                Authorization: 'Token ' + helpers.getCookie("auth_token")
             },
             data:{
                 city:this.state.city,
@@ -151,7 +153,7 @@ class ShippingAddressForm extends Component {
 
     async useCurrentLocation(){
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(async function (position) {
+            navigator.geolocation.getCurrentPosition(async (position)=> {
 
             var lat= position.coords.latitude 
             var long= position.coords.longitude
@@ -159,7 +161,7 @@ class ShippingAddressForm extends Component {
                 url: "http://127.0.0.1:8000/api/shop/addresses",
                 method: "POST",
                 headers: {
-                    Authorization: 'Token ' + getCookie("auth_token")
+                    Authorization: 'Token ' + helpers.getCookie("auth_token")
                 },
                 data:{
                     city:'',

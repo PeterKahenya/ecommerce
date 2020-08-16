@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import './Login.css'
 import { Button } from '@material-ui/core';
-import { login } from "../../helpers";
 import * as firebase from 'firebase'
+const helpers = require("../../helpers")
+
 
 class Login extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class Login extends Component {
         messaging.requestPermission()
             .then(async () =>{ return messaging.getToken() })
             .then(async token=> {
-                var status= await login({'gcm_token':token, 'email': this.state.email, password: this.state.password })
+                var status= await helpers.login({'gcm_token':token, 'email': this.state.email, password: this.state.password })
                 if (status) {
                     this.props.authSuccess()
                 } else {

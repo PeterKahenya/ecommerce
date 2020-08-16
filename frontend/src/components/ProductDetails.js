@@ -18,7 +18,7 @@ class ProductDetails extends Component {
         return ( <Dialog fullScreen onClose={this.closeDialog.bind(this)} open={this.props.open}>
             <div className="row">
                 <div className="d-flex">
-                    <img src={"http://127.0.0.1:8000"+this.props.product.image}/>
+                    <img alt={this.props.product.name} src={"http://127.0.0.1:8000"+this.props.product.image}/>
                     <h1>{this.props.product.name}</h1>
                 </div>
                 <p>

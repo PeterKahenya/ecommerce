@@ -3,163 +3,73 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import "./Call.css"
-// import CallingPage from './CallingPage';
 import { Container, AppBar, Toolbar, Tabs, Tab, List, ListItem, ListItemAvatar, Avatar, Typography, ListItemText, Divider, Paper } from '@material-ui/core';
 import PhoneIcon from '@material-ui/icons/Phone';
 import ContactsRounded from "@material-ui/icons/ContactsRounded";
 import CallingScreen from './calls/CallingScreen';
+import ExpertsList from './calls/ExpertsList';
+import CallsList from './calls/CallsList';
+
+
 import * as firebase from 'firebase'
-import { getCookie } from './helpers';
+// import { getCookie } from './helpers';
+const helpers = require("./helpers")
+
 const axios = require('axios').default
 
-const firebaseConfig = {
-	apiKey: "AIzaSyCtPibHbIC2K-fBznDF7-j9X1U1PMjREA0",
-	authDomain: "test-rtc-223ba.firebaseapp.com",
-	databaseURL: "https://test-rtc-223ba.firebaseio.com",
-	projectId: "test-rtc-223ba",
-	storageBucket: "test-rtc-223ba.appspot.com",
-	messagingSenderId: "985365152795",
-	appId: "1:985365152795:web:106c52c8574f6bc43264be",
-	measurementId: "G-V0LWLTZ2FD"
+var firebaseConfig = {
+  apiKey: "AIzaSyCtPibHbIC2K-fBznDF7-j9X1U1PMjREA0",
+  authDomain: "test-rtc-223ba.firebaseapp.com",
+  databaseURL: "https://test-rtc-223ba.firebaseio.com",
+  projectId: "test-rtc-223ba",
+  storageBucket: "test-rtc-223ba.appspot.com",
+  messagingSenderId: "985365152795",
+  appId: "1:985365152795:web:106c52c8574f6bc43264be",
+  measurementId: "G-V0LWLTZ2FD"
 };
+
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-class CallsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {utype:"caller",history:[]}
-    this.startCall=this.startCall.bind(this)
-  }
-
-  startCall(receiver) {
-    this.props.handleStartCall({utype:this.state.utype,receiver:receiver})
-  }
-
-  async componentDidMount(){
-    var history = await axios({
-      method: 'get',
-      url: 'http://127.0.0.1:8000/api/calls/history',
-      headers:{
-        'Authorization': 'Token '+getCookie("auth_token")
-      }
-    });
-    this.setState({history:history.data})
-    
-  }
-
-  render() {
-    return (<Container maxWidth="sm">
-      <List color="default">
-        {this.state.history.map(hist=>{
-          return(
-            <div>
-               <ListItem button onClick={this.startCall(hist.receiver)}>
-                <ListItemAvatar>
-                  <Avatar>
-                    <Typography>
-                      P
-                    </Typography>
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText primary="Peter Kahenya" secondary="July 27th" />
-              </ListItem>
-              <Divider />
-            </div>
-          )
-        })}
-      </List>
-    </Container>);
-  }
-}
-
-class ExpertsList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {utype:"callee",experts:[]}
-    this.startCall=this.startCall.bind(this)
-  }
-
-  startCall(receiver) {
-    this.props.handleStartCall({utype:this.state.utype,receiver:receiver})
-  }
-
-  async componentDidMount(){
-    var response = await axios({
-      method: 'get',
-      url: 'http://127.0.0.1:8000/api/experts/',
-    });
-    this.setState({experts:response.data})
-    
-  }
-
-
-  render() {
-    return (<div><Container maxWidth="sm">
-      <Paper elevation={3}>
-        <List component="nav">
-        {this.state.experts.map(expert=>{
-          return(
-            <div>
-               <ListItem button onClick={this.startCall(expert)}>
-          <ListItemAvatar>
-            <Avatar>
-              <Typography>
-                P
-              </Typography>
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary="Peter Kahenya" secondary="July 27th" />
-        </ListItem>
-        <Divider />
-              </div>
-       
-          )
-        })}
-        </List>
-      </Paper>
-
-    </Container></div>);
-  }
-}
-
-
 
 
 class Call extends Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      callingPageOpen: false,
+      callingPageOpen: this.props.room?true:false,
       tab: 0,
-      callDialogOpen: false,
-      utype:"caller",
-      roomId:""
+      callDialogOpen: this.props.room?true:false,
+      utype:this.props.utype,
+      roomId:this.props.room
     }
-    this.handleStartCall=this.handleStartCall.bind(this)
   }
+
   async handleStartCall(params) {
     console.log("usertype",params.utype)
     console.log("handleStartCall")
 		
-    var roomRef = await db.collection('rooms').doc();
+    var roomRef = await db.collection('rooms').add({});
+    console.log("room created ",roomRef.id)
 
     var response = await axios({
-      method:'GET',
+      method:'POST',
       url:'http://127.0.0.1:8000/api/calls/start_call',
       headers:{
-        'Authorization':'Token '+getCookie("auth_token")
+        'Authorization':'Token '+helpers.getCookie("auth_token")
       },
       data:{
         receiver:params.receiver,
-        room:roomRef.id
+        room:roomRef.id,
+        utype:params.utype
       }
     })
 
-    if (response.status=200 && response.data.status==="send_success") {
-    this.setState({ receiver:params.receiver,callDialogOpen: true,utype:params.utype,roomId:roomRef.id})
-      
+    if (response.status===200 && response.data.status==="success") {
+      this.setState({ receiver:params.receiver,callDialogOpen: true,utype:params.utype,roomId:roomRef.id})
+  
     } else {
       console.log("something went wrong")
     }
@@ -174,8 +84,8 @@ class Call extends Component {
   }
 
   componentDidMount(){
-    if (this.props.room_id) {
-      this.setState({roomId:this.props.room_id,callDialogOpen:true,utype:'callee'})
+    if (this.props.room) {
+      this.setState({roomId:this.props.room,callDialogOpen:true,utype:'callee'})
     }
   }
   render() {
@@ -187,15 +97,15 @@ class Call extends Component {
           <div>
             <AppBar style={{ backgroundColor: '#00b050' }} position="static">
               <Toolbar>
-                <Button onClick={this.handleClickOpen.bind(this)}>Back</Button>
+                <button className="btn text-white material-icons" onClick={this.handleClickOpen.bind(this)}>arrow_back</button>
               </Toolbar>
-              <Tabs centered style={{ display: 'flex', width: '100vw !important', justifyContent: "center" }} value={this.state.tab} onChange={this.handleChange.bind(this)}>
+              <Tabs centered  style={{ display: 'flex', width: '100vw !important', justifyContent: "center" }} value={this.state.tab} onChange={this.handleChange.bind(this)}>
                 <Tab icon={<PhoneIcon />} style={{ flexGrow: 1 }} label="Calls" id="simple-tab-1" aria-controls="simple-tabpane-1" />
                 <Tab icon={<ContactsRounded />} style={{ flexGrow: 1 }} label="Experts" id="simple-tab-2" aria-controls="simple-tabpane-3" />
               </Tabs>
             </AppBar>
             <div>
-              {this.state.tab === 0 ? <CallsList handleStartCall={this.handleStartCall} /> : <ExpertsList handleStartCall={this.handleStartCall} />}
+              {this.state.tab === 0 ? <CallsList handleStartCall={this.handleStartCall.bind(this)} /> : <ExpertsList handleStartCall={this.handleStartCall.bind(this)} />}
             </div>
           </div>
         }

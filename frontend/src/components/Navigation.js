@@ -18,7 +18,7 @@ import "./Navigation.css"
 import brand from"./brand.png"
 // import { getCookie } from '../helpers';
 import Cart from './Cart';
-import { Menu } from '@material-ui/core';
+import { Menu,Divider } from '@material-ui/core';
 import UserProfile from './UserProfile';
 import CategoriesListView from './CategoriesListView'
 
@@ -104,7 +104,7 @@ class Navigation extends Component {
                     <div>
                         <Drawer className="leftDrawer" onClose={this.toggleLeft.bind(this)} anchor="left" open={this.state.leftDrawerOpen}>
                             <UserProfile/>
-                            <hr/>
+                            <Divider/>
                             <CategoriesListView updateProducts={this.updateProducts.bind(this)}/>
                             <div>Help</div>
                             <div>Terms</div>

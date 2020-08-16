@@ -40,7 +40,7 @@ def get_receipt_no():
         receipt_no+=1
         return receipt
 
-def link_callback(self,uri, rel):
+def link_callback(uri, rel):
 
         sUrl = settings.STATIC_URL      
         sRoot = settings.STATIC_ROOT    
@@ -61,37 +61,35 @@ def link_callback(self,uri, rel):
 def generate_receipt(order,payment,number):
         subtotal=float(order.total_price)*(100/114)
         vat=float(order.total_price)-subtotal
-        print(vat)
-        print(subtotal)
 
         template = get_template('shop/receipt.html')
-        context = {'receipt_no':number,'vat':round(vat,2),'subtotal':round(subtotal,2) ,'payment':payment,"products":payment.order.products.all(),'date':datetime.datetime.today().strftime('%d/%m/%Y')}
+        context = {'receipt_no':number,'vat':round(vat,2),'order':order,'subtotal':round(subtotal,2) ,'payment':payment,"products":order.order_items.all(),'date':datetime.datetime.today().strftime('%d/%m/%Y')}
         html = template.render(context)
-        receipt_file_path=os.path.join(settings.MEDIA_ROOT,"receipts/"+self.request.user.first_name+self.request.user.last_name+"Receipt"+self.get_receipt_no()+".pdf")
+        receipt_file_path=os.path.join(settings.MEDIA_ROOT,"receipts/"+order.checkout_by.first_name+order.checkout_by.last_name+"Receipt"+str(number)+".pdf")
         receipt_file = open(receipt_file_path, "w+b")
-        pisaStatus = pisa.CreatePDF(html, dest=receipt_file, link_callback=self.link_callback)
+        pisaStatus = pisa.CreatePDF(html, dest=receipt_file, link_callback=link_callback)
         
         if pisaStatus.err:
             return  None,False
         
         receipt_file.close()
 
-        return receipt_file_path
+        return receipt_file_path,True
     
 def generate_lpo(order,payment,number):
         template = get_template('shop/lpo.html')
         subtotal=float(order.total_price)*(100/114)
-        vat=float(payment.order.total_price)-subtotal
+        vat=float(order.total_price)-subtotal
 
         context = {'receipt_no':number,'vat':round(vat,2),'subtotal':round(subtotal,2) ,'payment':payment,"products":order.order_items.all(),'date':datetime.datetime.today().strftime('%d/%m/%Y')}
         html = template.render(context)
         
         lpo_file_path=os.path.join(settings.MEDIA_ROOT,"lpos/"+order.checkout_by.first_name+order.checkout_by.last_name+"_LPO_"+str(number)+".pdf")
-        receipt_file = open(receipt_file_path, "w+b")
-        pisaStatus = pisa.CreatePDF(html, dest=receipt_file, link_callback=self.link_callback)
+        lpo_file = open(lpo_file_path, "w+b")
+        pisaStatus = pisa.CreatePDF(html, dest=lpo_file, link_callback=link_callback)
         if pisaStatus.err:
             return  None,False
-        lpo_file_path.close()
+        lpo_file.close()
 
         return lpo_file_path,True
 

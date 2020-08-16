@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from ..generate_docs import generate_and_send
+import json
 
 class ShippingAddressView(APIView):
 
@@ -43,7 +44,7 @@ class CheckoutView(APIView):
     
     """
         
-        List all products, or create a new product.
+        Get your cart and checkout
     
     """
     authentication_classes = [SessionAuthentication, BasicAuthentication, TokenAuthentication]
@@ -55,9 +56,15 @@ class CheckoutView(APIView):
 
     def post(self, request, format=None):
         cart,created = Order.objects.get_or_create(added_by=request.user)
+        order_items = json.loads(request.data.get("cart")).get("order_items")
+
+        cart.order_items.all().delete()
+        
+        for order_item in order_items:
+            cart.update(order_item)
 
 
-        print(request.COOKIES)
+
         shipping_address = ShippingAddress.objects.get(id=request.data.get("shipping_address_id"))
         shipping_address.order=cart
         shipping_address.save()
@@ -67,15 +74,13 @@ class CheckoutView(APIView):
         delivery=Delivery(address=shipping_address,mpesa_payment=payment)
         delivery.save()
         cart.completed=True
+        cart.checkout_by = request.user
         cart.save()
 
-        status = generate_and_send(shipping_address,payment)
+        status = generate_and_send(shipping_address,request,payment)
         print(status)
         serializer = DeliverySerializer(delivery)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.data)
 
 
 class CartView(APIView):

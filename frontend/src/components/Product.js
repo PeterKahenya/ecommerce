@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Card, CardActionArea,CardContent, CardMedia, CardActions, Button } from '@material-ui/core';
 import ProductDetails from './ProductDetails';
-import { updateCart } from "../helpers";
+// import { updateCart } from "../helpers";
+const helpers = require("../helpers")
 
 
 class Product extends Component {
@@ -29,11 +30,11 @@ class Product extends Component {
     }
 
     render() { 
-        console.log("product props",this.props.cart)
+        // console.log("product props",this.props.cart)
 
         let order_item_index=this.props.cart.order_items.findIndex(order_item=>{return order_item.product.id===this.state.product.id})
 
-        console.log("product index in cart",order_item_index)
+        // console.log("product index in cart",order_item_index)
 
 
         return ( <div>

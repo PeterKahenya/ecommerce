@@ -4,26 +4,29 @@ from .models import Call,Chat
 from django.db.models import Q
 from .serializers import CallSerializer,ChatSerializer
 from customers.models import Customer
+from experts.models import Expert
 from rest_framework.response import Response
-
+import json
 import requests
 
 
+
 def sendPush(to,roomId):
-    url = 'https://fcm.googleapis.com/fcm/send'
-    json_data = {
+	print(to,roomId)
+	url = 'https://fcm.googleapis.com/fcm/send'
+	json_data = {
         "to": to,
         "data":{
             "title":"Tengeneza Call Request",
             "room_id":roomId,
         },
     }
-    headers = {
+	headers = {
         "Authorization":"key=AAAAOGOy1tc:APA91bH41zurNt10opqsUz66eNl79KlHgXDNDyiZ4Hzm7pwpmdvk2xz2tHjzQWQ4mPqeEDzldQkjVRJT8IR7eM-y8TNgrgTLMvbl4kTj92AP0Tnq0BF1xQbDuVaXrdqkwyiBHdQBfDjT",
         "Content-Type":"application/json"
     }
 
-    x = requests.post(url, json = json_data, headers=headers)
+	x = requests.post(url, json = json_data, headers=headers)
     
 # Create your views here.
 class APICallHistory(APIView):
@@ -59,46 +62,44 @@ class APICallView(APIView):
 		The call then uses the room as the document id for the webrtc firebase app rendered
 	"""
 
-	def start_call(self,request,call):
-		return Response({'call':call,'utype':'caller'})
+	def start_call(self,call,receiver):
+		sendPush(receiver.gcm_token,call.room)
+		serializer = CallSerializer(call)
+		return Response({'call':serializer.data,'utype':'caller',"status":"success"})
+
 
 	def answer(self,request,call):
-		call.callee_accepted = True
-		call.save()
-
-		#send the fcm
-		data=json.loads(request.body.decode('utf-8'))
-		room_id=request.data.get("room_id")
-		expert=Expert.objects.get(id=data["receiver_id"])
-		if expert:
-			sendPush(expert.gcm_token,room_id)
-			return JsonResponse({"call_initiated":True})
-		else:
-			customer=Customer.objects.get(id=data["receiver_id"])
-			if customer:
-				sendPush(customer.gcm_token,room_id)
-				return JsonResponse({"call_initiated":True})
-			else:		
-				return JsonResponse({"call_initiated":False})
+		return JsonResponse({"call_initiated":True,"status":"success"})
 		
-		return render(request,"index.html",{'call':call,'utype':'callee'},None,None,None)
 
-		
-	
-	def get(self,request,format=None):
+	def post(self,request,format=None):
 		room_id = request.data.get("room")
+		receiver_id = request.data.get("receiver").get("id")
+		receiver = None
+
+		if Expert.objects.get(id=receiver_id):
+			receiver = Expert.objects.get(id=receiver_id)
+		else:
+			receiver = Customer.objects.get(id=receiver_id)
+
 		if room_id:
-			call= Call()
-			call.room=room_id
-			call.save()
 			utype = request.data.get("utype")
 			if utype == "caller":
-				return self.start_call(request,call)
+				call= Call()
+				call.room=room_id
+				call.caller=request.user
+				call.callee=receiver.user
+				call.save()
+				return self.start_call(call,receiver)
 			elif utype == "callee":
+				call = Call.objects.filter(room=room_id,callee_accepted=False).first()
+				call.callee_accepted = True
+				call.save()
 				return self.answer(request,call)
 			else:
-				"""utype is not recognized"""
-				print("utype is not recognized")
+				"""
+					utype is not recognized
+				"""
 				return Response({"message":"utype is not recognized"})
 		else:
 			"""Room ID not specified"""

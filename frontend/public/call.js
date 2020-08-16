@@ -7,10 +7,10 @@ var firebaseConfig = {
 	messagingSenderId: "985365152795",
 	appId: "1:985365152795:web:106c52c8574f6bc43264be",
 	measurementId: "G-V0LWLTZ2FD"
-  };
+};
   
   
-  var iceConfig = {
+var iceConfig = {
 	iceServers: [{
 	  urls: [
 		'stun:stun.kipya-africa.com:5349',
@@ -26,7 +26,7 @@ var firebaseConfig = {
 	],
 	sdpSemantics: "unified-plan",
 	iceCandidatePoolSize: 10,
-  };
+};
 
 var roomRef;
 var localStream;
@@ -40,7 +40,7 @@ var remoteVideo = document.getElementById('remoteVideo')
 var send_chat_btn = document.getElementById('send_chat_btn')
 var my_chat_text_area = document.getElementById('chat_text_area')
 var chat_logs = document.getElementById('chat_logs')
-var awaitingCallContainer = document.getElementById('awaitingCallContainer')
+// var awaitingCallContainer = document.getElementById('awaitingCallContainer')
 
 var logsPanel = document.getElementById('callDetailsContainer')
 var cameraOrientation = "user"
@@ -50,8 +50,9 @@ var flipCameraButton = document.getElementById("flip_camera_btn")
 async function prepare() {
 	log("prepare")
 	if (typeof firebase === 'undefined') throw new Error('hosting/init-error: Firebase SDK not detected.')
-		firebase.initializeApp(firebaseConfig);
-	const db = firebase.firestore();
+	
+	firebase.initializeApp(firebaseConfig);
+	const db = window.firebase.firestore();
 	roomRef = await db.collection('rooms').doc(callID);
 
 	if (utype==="caller") {
@@ -260,7 +261,7 @@ function handleOnTrack(event) {
 	log("handleOnTrack",event)
 	remoteVideo.srcObject = event.streams[0];
 	console.log("go away")
-	awaitingCallContainer.style.display="none"
+	// awaitingCallContainer.style.display="none !important"
 }
 
 
@@ -269,8 +270,7 @@ async function handleGotAnswer(answer) {
 	console.log(utype,answer.from)
 	await peerConnection.setRemoteDescription(answer.answer)
 	console.log("go away")
-	awaitingCallContainer.style.display="none"
-
+	// awaitingCallContainer.style.display="none !important"
 }
 
 

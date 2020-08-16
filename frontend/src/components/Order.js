@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Avatar, TextField, Button } from '@material-ui/core';
+import { Avatar, TextField, Button,Paper } from '@material-ui/core';
 
 class Order extends Component {
     constructor(props) {
@@ -23,12 +23,12 @@ class Order extends Component {
             <div>
                 {this.props.cart.order_items.map(oi=>{
                     let img_path="http://127.0.0.1:8000"+oi.product.image
-                    return(<div key={oi.product.id}>
+                    return(<Paper className="d-flex bg-light p-3 m-2 align-items-center justify-content-between" key={oi.product.id}>
                         <Avatar><img src={img_path} width={50} height={50}/></Avatar>
-                        <h4>{oi.product.name}</h4>
-                        <TextField value={oi.quantity} onChange={(e)=>{this.updateCart(oi,e.target.value)}} type="Number"/>
-                        <Button onClick={(e)=>{this.updateCart(oi,0)}}>Remove</Button>
-                        </div>)
+                        <h5>{oi.product.name}</h5>
+                        <TextField style={{width:30}} value={oi.quantity} onChange={(e)=>{this.updateCart(oi,e.target.value)}} type="Number"/>
+                        <button className="btn btn-danger" onClick={(e)=>{this.updateCart(oi,0)}}>Remove</button>
+                        </Paper>)
                 })}
             </div>
          );

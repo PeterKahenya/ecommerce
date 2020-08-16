@@ -21,8 +21,11 @@ class CheckMPESAPaymentView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
+        print(request.data)
         payment=MPESAPayment.objects.filter(code=request.data.get("code")).first()
+        print("payment"+str(payment))
         if payment and not Delivery.objects.filter(mpesa_payment=payment).first():
+            print(payment)
             serializer = MPESAPaymentSerializer(payment)
             return Response(serializer.data)
         return Response({"NF":True,"message":"No such payment. Please check the code and try again!"})

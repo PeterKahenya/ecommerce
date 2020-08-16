@@ -33,26 +33,30 @@
       Received from:
       <br>
       <strong>
-        {{payment.order.checkout_by.first_name}}
-        {{payment.order.checkout_by.last_name}}
+        {{order.checkout_by.first_name}}
+        {{order.checkout_by.last_name}}
       </strong>
     </p>
     <table>
       <tr>
         <th>Item</th>
+        <th>Item S/N</th>
+
         <th>Qty</th>
         <th>Rate Per Item</th>
         <th>Amount (KES)</th>
       </tr>
     
-    {% for product in products %}
+    {% for oi in products %}
       <tr>
-        <td>{{product.name}}</td>
-        <td>1</td>
-        <td>{{product.price|intcomma}}</td>
-        <td>{{product.price|intcomma}}</td>
+        <td>{{oi.product.name}}</td>
+        <td>{{oi.product.serial_no}}</td>
+        <td>{{oi.quantity}}</td>
+        <td>{{oi.product.price|intcomma}}</td>
+        <td>{{oi.product.price|intcomma}}</td>
       </tr>
     {% endfor %}
+
       <tr style="border: 0px solid #bbbbbb;">
         <td style="border: 0px solid #bbbbbb;">Order Subtotal(KES) </td>
         <td>{{subtotal|intcomma}}</td>

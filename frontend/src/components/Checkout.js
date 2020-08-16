@@ -4,7 +4,9 @@ import { Stepper,Step, StepLabel, StepContent, Button, Divider } from "@material
 import ConfirmOrder from './ConfirmOrder';
 import Order from './Order';
 import MPESAPayment from './MPESAPayment';
-import { getCookie } from './helpers';
+// import { getCookie } from './helpers';
+const helpers = require("./helpers")
+
 const axios =require("axios")
 
 
@@ -24,15 +26,17 @@ class Checkout extends Component {
             method:"POST",
             data:{
                 shipping_address_id:this.state.addr.id,
-                mpesa_payment_id:this.state.payment.id
+                mpesa_payment_id:this.state.payment.id,
+                cart:helpers.getCookie("cart")
             },
             headers:{
-                Authorization:'Token '+getCookie("auth_token")
+                Authorization:'Token '+helpers.getCookie("auth_token")
             }
 
         })
         if (response.status=201) {
-            this.setState({pendingDelivery:true})
+            document.cookie = "cart=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.reload()
         } else {
             
         }

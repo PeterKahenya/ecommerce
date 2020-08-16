@@ -2,13 +2,15 @@ import React,{Component} from "react"
 import Navigation from './components/Navigation'
 import Call from './components/Call'
 import ProductsList from './components/ProductsList'
-import {getCookie,getOrCreateCookieCart,updateCart as uc} from "./helpers"
+// import {getCookie,getOrCreateCookieCart,updateCart as uc} from "./helpers"
 import AuthenticateDialog from "./components/auth/Auth"
 import CategoriesListView from "./components/CategoriesListView"
 import "./Shop.css";
 import {Container} from "@material-ui/core"
 
 const axios = require("axios")
+const helpers = require("./helpers")
+
 
 class Shop extends Component{
 	constructor(props){
@@ -24,7 +26,7 @@ class Shop extends Component{
 	}
 
 	authenticate(){
-		if(!getCookie("auth_token")){
+		if(!helpers.getCookie("auth_token")){
 			this.setState({showAuthDialog:true})
 		}else{
 			console.log("already loggedIn")
@@ -35,7 +37,7 @@ class Shop extends Component{
 	async updateCart(data){
         console.log("addToCart in Shop Component")
 
-		let cart=await uc(data);
+		let cart=await helpers.updateCart(data);
 		this.setState({cart:cart})
 	}
 
@@ -55,9 +57,9 @@ class Shop extends Component{
 	}
 
 	componentDidMount(){
-		if (getCookie("cart")) {
+		if (helpers.getCookie("cart")) {
             console.log()
-            this.setState({cart:JSON.parse(getCookie("cart"))})
+            this.setState({cart:JSON.parse(helpers.getCookie("cart"))})
         } else {
             this.setState({cart:{order_items:[]}})
         }
@@ -67,9 +69,25 @@ class Shop extends Component{
 	render(){
 		var url = new URL(window.location.href);
 		var answering = url.searchParams.get("answering");
-		var room_id = url.searchParams.get("room_id");
-		if (answering==="yes" && room_id) {
-			return (<div><Navigation  cart={this.state.cart} authenticate={this.authenticate}/><ProductsList/><Call room_id={room_id}/></div>)	
+		var room_id = url.searchParams.get("r");
+
+		if (room_id) {
+			console.log(room_id)
+			return (<div className="d-flex flex-column">
+					<Navigation  cart={this.state.cart} updateProducts={this.updateProducts.bind(this)} updateCart={this.updateCart.bind(this)}  authenticate={this.authenticate} />
+					<div style={{marginTop:150}}>
+						<Container className="d-flex flex-row align-items-start ">
+							<CategoriesListView updateProducts={this.updateProducts.bind(this)} />
+							<ProductsList cart={this.state.cart} updateCart={this.updateCart.bind(this)} updateProducts={this.updateProducts.bind(this)} products={this.state.products} />
+						</Container>
+					</div> 
+					<Call room={room_id} authenticate={this.authenticate} utype="callee"/>
+					<AuthenticateDialog 
+						authSuccess={this.authenticate} 
+						toggleAuthDialog={this.toggleAuthDialog.bind(this)} 
+						show={this.state.showAuthDialog}
+					/>
+				</div>)
 		}
 
 		return (<div className="d-flex flex-column">
@@ -80,7 +98,7 @@ class Shop extends Component{
 							<ProductsList cart={this.state.cart} updateCart={this.updateCart.bind(this)} updateProducts={this.updateProducts.bind(this)} products={this.state.products} />
 						</Container>
 					</div> 
-					<Call authenticate={this.authenticate}/>
+					<Call  authenticate={this.authenticate} utype="callee"/>
 					<AuthenticateDialog 
 						authSuccess={this.authenticate} 
 						toggleAuthDialog={this.toggleAuthDialog.bind(this)} 

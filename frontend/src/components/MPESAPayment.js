@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { TextField, Button,Paper } from '@material-ui/core';
 import lipanampesa from"./lipanampesa.png"
 import * as config from '../config'
-import { getCookie } from './helpers';
+// import { getCookie } from './helpers';
+const helpers = require("./helpers")
+
 const axios = require('axios')
 
 class MPESAPayment extends Component {
@@ -16,7 +18,7 @@ class MPESAPayment extends Component {
             url:"http://127.0.0.1:8000/api/shop/payment/payment-method-one/check",
             method:"POST",
             headers:{
-                Authorization: 'Token ' + getCookie("auth_token")
+                Authorization: 'Token ' + helpers.getCookie("auth_token")
             },
             data:{
                 code:this.state.mpesa_code

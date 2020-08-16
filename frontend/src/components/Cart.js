@@ -3,7 +3,9 @@ import { Button, Dialog, AppBar, Toolbar, Typography, Container } from '@materia
 import Checkout from './Checkout';
 import CheckoutStepper from './CheckoutStepper';
 import Order from './Order';
-import {getCookie,getOrCreateCookieCart,updateCart as uc} from "./helpers"
+// import {getCookie,getOrCreateCookieCart,updateCart as uc} from "./helpers"
+const helpers = require("./helpers")
+
 
 
 class Cart extends Component {
@@ -13,7 +15,7 @@ class Cart extends Component {
     }
 
     handleOpenCheckout(){
-        if (getCookie("auth_token")) {
+        if (helpers.getCookie("auth_token")) {
         this.setState({openCheckout:!this.state.openCheckout})
         } else {
             this.props.authenticate()
@@ -34,8 +36,8 @@ class Cart extends Component {
             return total=parseFloat(total+parseFloat(oi.product.price)*parseFloat(oi.quantity))
         })
 
-        return ( <div className="m-3 p-4">
-            <h2>KES. {parseFloat(total)} </h2>
+        return ( <div className="m-4 p-4">
+            <h2 className="text-warning p-2">KES. {parseFloat(total)} </h2>
             <Order updateCart={this.updateCart.bind(this)} cart={this.props.cart} />
 
             <Dialog open={this.state.openCheckout} fullScreen>
@@ -56,7 +58,7 @@ class Cart extends Component {
                 </Container>
             </Dialog>
 
-            <Button onClick={this.handleOpenCheckout.bind(this)}>Proceed to Checkout</Button>
+            <button className="btn btn-lg btn-primary" onClick={this.handleOpenCheckout.bind(this)}>Proceed to Checkout</button>
         </div> );
     }
 }

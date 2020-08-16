@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'shop.apps.ShopConfig',
     'rest_framework',
     'corsheaders',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
+    'django.contrib.humanize',
+    'mathfilters'
 
 
 ]
@@ -165,3 +167,10 @@ STATICFILES_DIRS = [
 
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR,"media")
+
+
+EMAIL_HOST="smtp.gmail.com"
+EMAIL_PORT=587
+EMAIL_HOST_USER="info@africa-drilling-solutions.com"
+EMAIL_HOST_PASSWORD="MakeitHappen2016"
+EMAIL_USE_TLS=True
